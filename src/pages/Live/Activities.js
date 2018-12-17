@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import { connect } from 'dva';
 import { Row, Col } from 'antd';
-import styles from './Login.less';
+import styles from './Activities.less';
 import Pic from '../../assets/p1.png';
 
 

@@ -1,11 +1,11 @@
 export default [
-  // user
   {
     path: '/',
     component: '../layouts/BlankLayout',
     routes: [
-      { path: '/', redirect: '/user/login' },
-      { path: '/user/login', component: './User/Login' },
+      { path: '/', redirect: '/activity/activities' },
+      { path: '/activity/activities', component: './Live/Activities' },
+      { path: '/activity/live', component: './Live/Live' },
     ],
   },
 ];
