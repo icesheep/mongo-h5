@@ -3,9 +3,12 @@ export default [
     path: '/',
     component: '../layouts/BlankLayout',
     routes: [
-      { path: '/', redirect: '/activity/Live' },
-      { path: '/activity/activities', component: './Live/Activities' },
-      { path: '/activity/live', component: './Live/Live' },
+      { path: '/', redirect: '/activity/live' },
+      // { path: '/activity/activities', component: './Live/Activities' },
+      { path: '/activity/live', component: './Live/Live' }, //直播页
+      { path: '/activity/share', component: './Share/Share' }, //h5中间页
+      { path: '/activity/share-player', component: './Share/PlayShare' }, //播放器分享
+      { path: '/activity/share-audio', component: './Share/VideoShare' }, //广播分享
     ],
   },
 ];

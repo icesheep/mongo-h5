@@ -10,7 +10,11 @@ import styles from './Live.less';
 import Pic from '../../assets/p1.png';
 import Play from '../../assets/play.png';
 import Pause from '../../assets/pause.png';
+import PlayGray from '../../assets/play-gray.png';
+import PauseGray from '../../assets/pause-gray.png';
 import Wave from '../../assets/wave.png';
+import playBg from '../../assets/bg-play.png';
+import playLive from '../../assets/player_live.png';
 
 class Live extends Component {
   state = {
@@ -149,15 +153,15 @@ class Live extends Component {
               onReady={(player,players) => {console.log('准备完毕', player,players);this.setState({players})}}
               {...this.state.videoJsOptions}
             />
-            <Col className={styles.item7} onClick={this.play}><img alt="" src={playing ? Pause:Play} /></Col>
+            <Col className={styles.item7} onClick={this.play}><img alt="" src={playing ? PauseGray:PlayGray} /></Col>
             <Col className={styles.item8}>2019湖南卫视跨年演唱会</Col>
-            <Col className={styles.item9}>直播中</Col>
+            <img className={styles.item9} src={playLive} />
             <Col className={styles.item10}>
               <img alt="" src={Wave} />
               <div className={styles.d1}>{livingTime}</div>
             </Col>
             <Col className={styles.item4}>
-              <img alt="" src={Pic} />
+              <img alt="" src={playBg} />
             </Col>
             <Col className={styles.item5}>
               今年，湖南卫视跨年演唱会即将携全面升级的概念、互动、 舞台以及阵容，重磅开启。震撼升级的跨年演唱会，即将 点燃激情，唱响青春，为全新的2019年揭开精彩序章。
@@ -187,7 +191,7 @@ class Live extends Component {
         <Row className={styles.div2}>
           <Col span={5} className={styles.leftcol}><img alt="" src={Pic} /></Col>
           <Col span={16} className={styles.rightcol}>
-            <p className={styles.p1}><span style={{color: '#EB032A'}}>2018跨年演唱会</span>{startLive ? <span className={styles.p3}>直播中</span> : null}</p>
+            <p className={styles.p1}><span style={{color: '#EB032A'}}>2018跨年演唱会</span>{startLive ? <img src={playLive} className={styles.p3} />: null}</p>
             <p className={styles.p2}>震撼升级的跨年演唱会，即将点燃激情， 唱响青春，为全新的2019年揭开精彩…</p>
           </Col>
           <Col span={3} className={styles.playCol}>

@@ -78,11 +78,11 @@ export default class VideoJsForReact extends Component {
   render() {
     return (
       <div>
-        <video
+        <audio
           style={{display:'none'}}
           ref={node => this.videoContainer = node}
           className="video-js"
-        ></video>
+        ></audio>
       </div>
     )
   }
