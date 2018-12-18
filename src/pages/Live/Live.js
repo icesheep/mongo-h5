@@ -16,7 +16,7 @@ class Live extends Component {
   state = {
     lastTime: '',
     livingTime: '',
-    startLive: true,
+    startLive: false,
     players: null,
     playing: false,
     videoJsOptions: {
@@ -46,6 +46,12 @@ class Live extends Component {
   componentWillUnmount() {
     clearTimeout(this.timer);
     cancelAnimationFrame(this.requestRef);
+    clearTimeout(this.timer2);
+    cancelAnimationFrame(this.requestRef2);
+  }
+
+  startLive = () => {
+    this.setState({startLive: true})
   }
 
   play = () => {
@@ -70,7 +76,7 @@ class Live extends Component {
   loopData = () => {
     this.requestRef = requestAnimationFrame(() => {
       this.timer = setTimeout(() => {
-        const deadTime = moment('2018-12-31 09:00:00');
+        const deadTime = moment('2018-12-31 21:00:00');
         const now = moment();
         if(deadTime.isAfter(now)) {
           const temp = deadTime.diff(now,'seconds')
@@ -102,7 +108,7 @@ class Live extends Component {
   livingData = () => {
     this.requestRef2 = requestAnimationFrame(() => {
       this.timer2 = setTimeout(() => {
-        const deadTime = moment('2018-12-31 09:00:00');
+        const deadTime = moment('2018-12-31 21:00:00');
         const now = moment();
         if(!deadTime.isAfter(now)) {
           const temp = deadTime.diff(now,'seconds')
@@ -164,7 +170,7 @@ class Live extends Component {
             <Col className={styles.item1}>2019湖南卫视跨年演唱会</Col>
             <Col className={styles.item1}>即将呈现</Col>
             <Col className={styles.item2}>节目简介：自2005年开创国内跨年演唱会先河起，湖南卫视 十三年间打造出了国内最具影响力和价值的跨年品牌。</Col>
-            <Col className={styles.item3}>
+            <Col className={styles.item3} onClick={this.startLive}>
               <div className={styles.p1}>距离开始</div>
               <div className={styles.p2}>{lastTime}</div>
             </Col>
