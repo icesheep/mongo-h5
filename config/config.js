@@ -72,13 +72,13 @@ export default {
   externals: {
     '@antv/data-set': 'DataSet',
   },
-  proxy: {
-    '/webview': {
-      target: 'https://fm.tingdao.com/',
-      changeOrigin: true,
-      pathRewrite: { '^/': '/' },
-    },
-  },
+  // proxy: {
+  //   '/webview': {
+  //     target: 'https://fm.tingdao.com/',
+  //     changeOrigin: true,
+  //     pathRewrite: { '^/': '/' },
+  //   },
+  // },
   ignoreMomentLocale: true,
   lessLoaderOptions: {
     javascriptEnabled: true,

@@ -81,7 +81,9 @@ export default function request(url, option) {
 
   const defaultOptions = {
     credentials: 'include',
+    mode: 'cors',
   };
+  console.log(url,defaultOptions)
   const newOptions = { ...defaultOptions, ...options };
   if (
     newOptions.method === 'POST' ||

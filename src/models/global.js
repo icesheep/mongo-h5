@@ -12,7 +12,7 @@ export default {
       const data = yield call(queryList,payload);
       yield put({
         type: 'saveList',
-        payload: data&&data.biz,
+        payload: data&&data.biz || {},
       });
     },
   },
