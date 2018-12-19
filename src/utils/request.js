@@ -3,6 +3,7 @@ import { notification } from 'antd';
 import router from 'umi/router';
 import hash from 'hash.js';
 import { isAntdPro } from './utils';
+import { stringify } from 'qs';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -119,8 +120,8 @@ export default function request(url, option) {
     }
   }
   return fetch(url, newOptions)
-    .then(checkStatus)
-    .then(response => cachedSave(response, hashcode))
+    // .then(checkStatus)
+    // .then(response => cachedSave(response, hashcode))
     .then(response => {
       // DELETE and 204 do not return data by default
       // using .json will report an error.

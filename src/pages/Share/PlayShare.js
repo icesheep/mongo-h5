@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import { connect } from 'dva';
+import { connect } from 'dva';
 import { Row, Col, Icon, Affix, Modal } from 'antd';
 import VideoJsForReact from '@/components/Videojs';
 import styles from './PlayShare.less';
@@ -7,15 +7,52 @@ import Jay from '../../assets/jay.jpg';
 import PlayGray from '../../assets/play-gray.png';
 import mgLogo from '../../assets/mgdt_logo.png';
 import PauseGray from '../../assets/pause-gray.png';
-import gequ from '../../assets/jinse.mp3';
 
+@connect(({global }) => ({
+  global,
+}))
 class PlayShare extends Component {
   state = {
     playingtime: 0,
     duration: 0,
     playing: false,
     showFix: true,
+    playIndex: null,
   };
+
+  componentDidMount() {
+    const {
+      global: { list },
+    } = this.props;
+    const {content=[]} = list;
+    if(window.location.href.split('?').length > 1 && content.length > 0) {
+      this.setState({
+        playIndex: window.location.href.split('?')[1]
+      })
+    }else {
+      const { dispatch } = this.props;
+      const params = {
+        "base" : {
+          "userid" : "1810232029531260",
+          "caller" : "18514281314",
+          "imei" : "db658275cf708690c350ec01b3f6e863db6627a4",
+          "ua" : "apple|iPhone|iPhone9,1|12.0.1|750*1334",
+          "version" : "2.1",
+          "osid" : "ios",
+          "apn" : "wifi",
+          "df" : "22010000"
+        },
+        "param" : {
+          "type": 1,
+          "cid": "189477276583936"
+        }
+      };
+      dispatch({
+        type: 'global/webview',
+        payload: params,
+      });
+    }
+  }
 
   componentWillUnmount() {
     clearTimeout(this.timer);
@@ -84,12 +121,24 @@ class PlayShare extends Component {
   }
 
   render() {
-    const {showFix, playing, duration, playingtime} = this.state;
+    const {showFix, playing, duration, playingtime, playIndex} = this.state;
+    const {
+      global: { list },
+    } = this.props;
+    const {content=[]} = list;
+    let detail = {};
+    if(playIndex && content.length >= playIndex) {
+      detail = content[playIndex];
+    }else {
+      detail = content.length>0?content[0]:{};
+    }
     return (
       <div className={styles.main}>
+        <div style={{backgroundImage: `url("${detail.imgUrl}")`}} className={styles.main1}> </div>
+        {/* <div className={styles.mengban}></div> */}
         <Row className={styles.div1}>
-          <img src={Jay} className={styles.img1} />
-          <Col className={styles.item1}>我想和你唱</Col>
+          <img src={detail.imgUrl} className={styles.img1} />
+          <Col span={20} offset={2} className={styles.item1}>{detail.title}</Col>
           <img onClick={this.playAudio} src={playing ? PauseGray:PlayGray} className={styles.img2} />
           <Col className={styles.item2}>
             <Row>
@@ -110,7 +159,7 @@ class PlayShare extends Component {
         </Row> : null}
         <audio
           id="player"
-          src={gequ}
+          src={detail.playUrl}
           style={{display:'none'}}
           ref={node => this.videoContainer = node}
           preload="none" controlsList="nodownload"

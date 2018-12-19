@@ -15,6 +15,8 @@ import PauseGray from '../../assets/pause-gray.png';
 import Wave from '../../assets/wave.png';
 import playBg from '../../assets/bg-play.png';
 import playLive from '../../assets/player_live.png';
+import bgLive from '../../assets/bg-live.png';
+import music from '../../assets/xiaolin.mp3';
 
 class Live extends Component {
   state = {
@@ -23,6 +25,7 @@ class Live extends Component {
     startLive: false,
     players: null,
     playing: false,
+    playingLast: false,
     videoJsOptions: {
       preload: 'auto',  // 预加载
       bigPlayButton: {},  // 大按钮
@@ -141,12 +144,30 @@ class Live extends Component {
     });
   };
 
+  playLastAudio = (v) => {
+    const {playingLast} = this.state;
+    if(playingLast === v) {
+      this.setState({
+        playingLast: false,
+      }, ()=>{
+        this.videoContainer.pause();
+      })
+    }else {
+      this.setState({
+        playingLast: v,
+      }, ()=>{
+        this.videoContainer.play();
+      })
+    }
+  }
+
   render() {
-    const {lastTime, startLive, playing, livingTime} = this.state;
+    const {lastTime, startLive, playing, livingTime, playingLast} = this.state;
     return (
       <div className={styles.main}>
         {startLive ? 
           <Row className={styles.div1}>
+            <div style={{backgroundImage: bgLive}} className={styles.bglive}> </div>
             {/* <ReactPlayer url="http://prertmp.tingdao.com:91/index.m3u8" controls loop /> */}
             <VideoJsForReact
               sourceChanged={(player,players) => {console.log('准备完毕', player,players);this.setState({players})}}
@@ -158,7 +179,7 @@ class Live extends Component {
             <img className={styles.item9} src={playLive} />
             <Col className={styles.item10}>
               <img alt="" src={Wave} />
-              <div className={styles.d1}>{livingTime}</div>
+              {livingTime ? <div className={styles.d1}>{livingTime}</div> : null}
             </Col>
             <Col className={styles.item4}>
               <img alt="" src={playBg} />
@@ -166,11 +187,10 @@ class Live extends Component {
             <Col className={styles.item5}>
               今年，湖南卫视跨年演唱会即将携全面升级的概念、互动、 舞台以及阵容，重磅开启。震撼升级的跨年演唱会，即将 点燃激情，唱响青春，为全新的2019年揭开精彩序章。
             </Col>
-            <Col className={styles.item6}>
-              往期跨年直播
-            </Col>
+            
           </Row>:
           <Row className={styles.div1}>
+            <div style={{backgroundImage: bgLive}} className={styles.bglive}> </div>
             <Col className={styles.item1}>2019湖南卫视跨年演唱会</Col>
             <Col className={styles.item1}>即将呈现</Col>
             <Col className={styles.item2}>节目简介：自2005年开创国内跨年演唱会先河起，湖南卫视 十三年间打造出了国内最具影响力和价值的跨年品牌。</Col>
@@ -179,45 +199,54 @@ class Live extends Component {
               <div className={styles.p2}>{lastTime}</div>
             </Col>
             <Col className={styles.item4}>
-              <img alt="" src={Pic} />
+              <img alt="" src={bgLive} />
             </Col>
             <Col className={styles.item5}>
               今年，湖南卫视跨年演唱会即将携全面升级的概念、互动、 舞台以及阵容，重磅开启。震撼升级的跨年演唱会，即将 点燃激情，唱响青春，为全新的2019年揭开精彩序章。
             </Col>
-            <Col className={styles.item6}>
-              往期跨年直播
-            </Col>
           </Row>}
-        <Row className={styles.div2}>
+        <Row>
+          <Col className={styles.item6}>
+            往期跨年直播
+          </Col>
+        </Row>
+        <Row className={styles.div2} onClick = {()=>{this.playLastAudio(2018)}}>
           <Col span={5} className={styles.leftcol}><img alt="" src={Pic} /></Col>
           <Col span={16} className={styles.rightcol}>
-            <p className={styles.p1}><span style={{color: '#EB032A'}}>2018跨年演唱会</span>{startLive ? <img src={playLive} className={styles.p3} />: null}</p>
+            <p className={styles.p1}><span style={{color: playingLast===2018 ?'#EB032A':''}}>2018跨年演唱会</span>{playingLast===2018 ? <div className={styles.p3}>播放中</div>: null}</p>
             <p className={styles.p2}>震撼升级的跨年演唱会，即将点燃激情， 唱响青春，为全新的2019年揭开精彩…</p>
           </Col>
           <Col span={3} className={styles.playCol}>
-            <img alt="" src={Play} />
+            <img alt="" src={playingLast!==2018 ? Play : Pause} />
           </Col>
         </Row>
-        <Row className={styles.div2}>
+        <Row className={styles.div2} onClick = {()=>{this.playLastAudio(2017)}}>
           <Col span={5} className={styles.leftcol}><img alt="" src={Pic} /></Col>
           <Col span={16} className={styles.rightcol} style={{marginTop: '.3rem'}}>
-            <p className={styles.p1}><span>2017跨年演唱会</span></p>
+            <p className={styles.p1}><span style={{color: playingLast===2017 ?'#EB032A':''}}>2017跨年演唱会</span>{playingLast===2017 ? <div className={styles.p3}>播放中</div>: null}</p>
             <p className={styles.p2}>张惠妹献唱经典温暖如初</p>
           </Col>
           <Col span={3} className={styles.playCol}>
-            <img alt="" src={Play} />
+            <img alt="" src={playingLast!==2017 ? Play : Pause} />
           </Col>
         </Row>
-        <Row className={styles.div2}>
+        <Row className={styles.div2} onClick = {()=>{this.playLastAudio(2016)}}>
           <Col span={5} className={styles.leftcol}><img alt="" src={Pic} /></Col>
           <Col span={16} className={styles.rightcol}>
-            <p className={styles.p1}><span>2016跨年演唱会</span></p>
+            <p className={styles.p1}><span style={{color: playingLast===2016 ?'#EB032A':''}}>2016跨年演唱会</span>{playingLast===2016 ? <div className={styles.p3}>播放中</div>: null}</p>
             <p className={styles.p2}>张杰六连唱十年金曲超燃LIVE</p>
           </Col>
           <Col span={3} className={styles.playCol}>
-            <img alt="" src={Play} />
+            <img alt="" src={playingLast!==2016 ? Play : Pause} />
           </Col>
         </Row>
+        <audio
+          id="player"
+          src={music}
+          style={{display:'none'}}
+          ref={node => this.videoContainer = node}
+          preload="none" controlsList="nodownload"
+        ></audio>
       </div>
     );
   }
