@@ -58,7 +58,7 @@ class Share extends Component {
     const cid=this.props.location.query.cid;
     const type=parseInt(this.props.location.query.type);
     const urlParams = new URL(window.location.href);
-    window.location.href = `${urlParams.origin}${urlParams.pathname}#/activity/share-player?cid=${cid}&type=${index}&index=${index}`
+    window.location.href = `${urlParams.origin}${urlParams.pathname}#/activity/share-player?cid=${cid}&type=${type}&index=${index}`
   }
 
   formatterNum = (num) => {
