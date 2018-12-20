@@ -114,7 +114,7 @@ class Share extends Component {
               <Col className={styles.item4}>
                 <Row className={selectedAudio === v ? styles.selected : styles.unselected} onClick={()=>{this.playAudio(v,index)}}>
                   <Col span={4} className={styles.list1}>{this.formatterNum(index+1)}</Col>
-                  <Col span={16}className={styles.list2}>
+                  <Col span={20}className={styles.list2}>
                     <p className={styles.p1}>{v.title}</p>
                     <p className={styles.p2}>{v.publishName}</p>
                   </Col>
