@@ -87,10 +87,11 @@ class Live extends Component {
         const now = moment();
         if(deadTime.isAfter(now)) {
           const temp = deadTime.diff(now,'seconds')
-          const hour = Math.floor(temp/3600)
+          const day = Math.floor(temp/86400)
+          const hour = Math.floor(temp%86400/3600)
           const minute = Math.floor(temp%3600/60)&&`${Math.floor(temp%3600/60)}`.length<2 ? `0${Math.floor(temp%3600/60)}` : Math.floor(temp%3600/60)
           const second = temp%3600%60&&`${temp%3600%60}`.length<2 ? `0${temp%3600%60}` : temp%3600%60
-          const str = `${hour}: ${minute}: ${second}`
+          const str = `${day>0 ? `${day}天` : ''} ${hour}: ${minute}: ${second}`
           this.setState(
             {
               lastTime: str,
