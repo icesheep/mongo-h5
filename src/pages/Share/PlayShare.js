@@ -28,6 +28,7 @@ class PlayShare extends Component {
     } = this.props;
     const {content=[]} = list;
     const {type,cid,index} = this.props.location.query;
+    console.log(type,cid,index)
     if(index>=0) {
       this.setState({
         playIndex: index
@@ -46,10 +47,11 @@ class PlayShare extends Component {
         "df" : "22010000"
       },
       "param" : {
-        "type": 1,
-        "cid": "189477276583936"
+        "type": type||1,
+        "cid": cid||"189477276583936"
       }
     };
+    console.log(params)
     dispatch({
       type: 'global/webview',
       payload: params,
