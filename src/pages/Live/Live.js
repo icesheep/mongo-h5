@@ -16,8 +16,6 @@ import Wave from '../../assets/wave.png';
 import playBg from '../../assets/bg-play.png';
 import playLive from '../../assets/player_live.png';
 import bgLive from '../../assets/bg-live.png';
-import music1 from '../../assets/1.mp3';
-import music2 from '../../assets/2.mp3';
 import music3 from '../../assets/3.mp3';
 
 const lastPlayList = [
@@ -26,14 +24,14 @@ const lastPlayList = [
     title: '2018跨年演唱会',
     desc: '震撼升级的跨年演唱会，即将点燃激情， 唱响青春，为全新的2019年揭开精彩…',
     imgsrc: Pic,
-    playsrc: music1,
+    playsrc: music3,
   },
   {
     id: '2017',
     title: '2017跨年演唱会',
     desc: '张惠妹献唱经典温暖如初',
     imgsrc: Pic,
-    playsrc: music2,
+    playsrc: music3,
   },
   {
     id: '2016',
