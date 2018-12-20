@@ -55,31 +55,10 @@ class Share extends Component {
   }
 
   playAudio = (v,index) => {
-    // const {selectedAudio,playing} = this.state;
-    // if(selectedAudio === v) {
-    //   if(playing) {
-    //     this.setState({
-    //       playing: false,
-    //     },() => {
-    //       this.videoContainer.pause();
-    //     })
-    //   }else {
-    //     this.setState({
-    //       playing: true,
-    //     },() => {
-    //       this.videoContainer.play();
-    //     })
-    //   }
-    // }else {
-    //   this.setState({
-    //     playing: true,
-    //     selectedAudio: v,
-    //   },() => {
-    //     this.videoContainer.play();
-    //   })
-    // }
+    const cid=this.props.location.query.cid;
+    const type=parseInt(this.props.location.query.type);
     const urlParams = new URL(window.location.href);
-    window.location.href = `${urlParams.origin}${urlParams.pathname}#/activity/share-player?${index}`
+    window.location.href = `${urlParams.origin}${urlParams.pathname}#/activity/share-player?cid=${cid}&type=${index}&index=${index}`
   }
 
   formatterNum = (num) => {
@@ -129,8 +108,8 @@ class Share extends Component {
         {showFix ?
         <Row className={styles.fix1}>
           <Icon type="close" className={styles.close} onClick={this.closeFix}/>
-          <Col span={5}><img src={mgLogo} /></Col>
-          <Col span={13} className={styles.p1}>芒果动听APP 要您一起加入<br/> 加油美好生活！</Col>
+          <Col span={4}><img src={mgLogo} /></Col>
+          <Col span={14} className={styles.p1}>芒果动听APP 邀您一起加入<br/> 加油美好生活！</Col>
           <Col span={6} className={styles.p2} onClick={this.downApp}>下载APP</Col>
         </Row> : null}
         {/* <VideoJsForReact

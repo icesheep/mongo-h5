@@ -14,10 +14,12 @@ import PauseGray from '../../assets/pause-gray.png';
 class PlayShare extends Component {
   state = {
     playingtime: 0,
+    buffertime: 0,
     duration: 0,
     playing: false,
     showFix: true,
-    playIndex: null,
+    playIndex: 0,
+    mouseDown:false,
   };
 
   componentDidMount() {
@@ -25,33 +27,33 @@ class PlayShare extends Component {
       global: { list },
     } = this.props;
     const {content=[]} = list;
-    if(window.location.href.split('?').length > 1 && content.length > 0) {
+    const {type,cid,index} = this.props.location.query;
+    if(index>=0) {
       this.setState({
-        playIndex: window.location.href.split('?')[1]
+        playIndex: index
       })
-    }else {
-      const { dispatch } = this.props;
-      const params = {
-        "base" : {
-          "userid" : "1810232029531260",
-          "caller" : "18514281314",
-          "imei" : "db658275cf708690c350ec01b3f6e863db6627a4",
-          "ua" : "apple|iPhone|iPhone9,1|12.0.1|750*1334",
-          "version" : "2.1",
-          "osid" : "ios",
-          "apn" : "wifi",
-          "df" : "22010000"
-        },
-        "param" : {
-          "type": 1,
-          "cid": "189477276583936"
-        }
-      };
-      dispatch({
-        type: 'global/webview',
-        payload: params,
-      });
     }
+    const { dispatch } = this.props;
+    const params = {
+      "base" : {
+        "userid" : "1810232029531260",
+        "caller" : "18514281314",
+        "imei" : "db658275cf708690c350ec01b3f6e863db6627a4",
+        "ua" : "apple|iPhone|iPhone9,1|12.0.1|750*1334",
+        "version" : "2.1",
+        "osid" : "ios",
+        "apn" : "wifi",
+        "df" : "22010000"
+      },
+      "param" : {
+        "type": 1,
+        "cid": "189477276583936"
+      }
+    };
+    dispatch({
+      type: 'global/webview',
+      payload: params,
+    });
   }
 
   componentWillUnmount() {
@@ -59,20 +61,42 @@ class PlayShare extends Component {
     cancelAnimationFrame(this.requestRef);
   }
 
-
   PlayingMusic = () => {
     this.requestRef = requestAnimationFrame(() => {
       this.timer = setTimeout(() => {
         if(this.videoContainer) {
-          this.setState(
-            {
-              playingtime: this.videoContainer.currentTime,
-              duration: this.videoContainer.duration,
-            },
-            () => {
-              this.PlayingMusic();
-            }
-          );
+          let timeRages = this.videoContainer.buffered;
+          let bufferedTime = 0
+          if(timeRages.length !== 0){
+              bufferedTime = timeRages.end(timeRages.length-1);
+          }
+          if(this.videoContainer.currentTime === this.videoContainer.duration) {
+            let {playIndex} = this.state;
+            let temp = parseInt(playIndex)+1
+            this.setState(
+              {
+                playingtime: this.videoContainer.currentTime,
+                duration: this.videoContainer.duration,
+                buffertime: bufferedTime,
+                playIndex: temp,
+              },
+              () => {
+                this.videoContainer.play();
+                this.PlayingMusic();
+              }
+            );
+          }else {
+            this.setState(
+              {
+                playingtime: this.videoContainer.currentTime,
+                duration: this.videoContainer.duration,
+                buffertime: bufferedTime,
+              },
+              () => {
+                this.PlayingMusic();
+              }
+            );
+          }
         }
       }, 1000);
     });
@@ -101,7 +125,7 @@ class PlayShare extends Component {
   }
 
   playAudio = () => {
-    const {playing} = this.state;
+    const {playing,playIndex} = this.state;
     if(playing) {
       this.setState({
         playing: false,
@@ -112,6 +136,7 @@ class PlayShare extends Component {
       })
     }else {
       this.setState({
+        playIndex : playIndex===-1 ? 0 : playIndex,
         playing: true,
       }, ()=>{
         this.videoContainer.play();
@@ -120,46 +145,168 @@ class PlayShare extends Component {
     }
   }
 
+  stopPlay = () => {
+    this.setState({
+      playIndex: -1,
+      playing: false,
+    })
+  }
+  //PC端设置进度条
+  setTimeOnPc = (time) =>{
+    let audio = this.videoContainer;
+    if(audio.currentTime !== 0) {
+        audio.currentTime = time;
+        this.setState(
+          {
+            playingtime: time,
+          }
+        );
+    }
+  }
+  //PC端点击事件
+  clickChangeTime = (e) =>{
+    const {duration} = this.state;
+    if(!e.pageX&& !duration){
+        return
+    }
+    this.setTimeOnPc((e.pageX-this.progressDiv.clientWidth*0.1666666667)/(this.progressDiv.clientWidth*0.6666666667)*duration)
+  }
+  //PC端拖动进度条
+  mouseDown = () =>{
+      this.setState({
+          mouseDown:true
+      });
+  }
+  slideChangeTime = (e) =>{
+      if(this.state.mouseDown){
+          const {duration} = this.state;
+          if(!e.pageX&& !duration){
+              return
+          }
+          this.setTimeOnPc((e.pageX-this.progressDiv.clientWidth*0.1666666667)/(this.progressDiv.clientWidth*0.6666666667)*duration)
+      }
+  }
+  mouseUp = () =>{
+      this.setState({
+          mouseDown:false
+      });
+  }
+  startChangeTime = (e) =>{
+    var point = this.getPoint(e);
+    const {duration} = this.state;
+    if(!point.pageX&& !duration){
+        return
+    }
+    this.setTimeOnPc((point.pageX-this.progressDiv.clientWidth*0.1666666667)/(this.progressDiv.clientWidth*0.6666666667)*duration)
+  }
+  moveProgress = (e) =>{
+    e.preventDefault(); //阻止默认行为
+    var point = this.getPoint(e);
+    const {duration} = this.state;
+    if(!point.pageX&& !duration){
+        return
+    }
+    this.setTimeOnPc((point.pageX-this.progressDiv.clientWidth*0.1666666667)/(this.progressDiv.clientWidth*0.6666666667)*duration)
+  }
+  // touchend = (e) =>{
+  //   var point = this.getPoint(e);
+  //   const {duration} = this.state;
+  //   if(!point.pageX&& !duration){
+  //       return
+  //   }
+  //   this.setTimeOnPc((point.pageX-this.progressDiv.clientWidth*0.1666666667)/(this.progressDiv.clientWidth*0.6666666667)*duration)
+  // }
+  //默认以第一个手指的位置计算
+  getPoint =(e) =>{
+    return e.touches ? e.touches[0] : e;
+  };
+
+  getTime = (musicTime) =>{
+    if(musicTime){
+        if(musicTime<60){
+            musicTime = `00:${musicTime<10?`0${musicTime}`:musicTime}`
+          }else{
+              musicTime = `${parseInt(musicTime/60)<10?`0${parseInt(musicTime/60)}`:parseInt(musicTime/60)}:${musicTime%60<10?`0${musicTime%60}`:musicTime%60}`
+          }
+          return musicTime
+
+      }else{
+          return `00:00`
+      }
+  }
+  setTime = (time) =>{
+    let audio = this.videoContainer;
+    if(audio.currentTime !== 0) {
+        audio.currentTime = time;
+        this.setState(
+          {
+            playingtime: time,
+          }
+        );
+    }
+  }
+
   render() {
-    const {showFix, playing, duration, playingtime, playIndex} = this.state;
+    const {showFix, playing,buffertime, duration, playingtime, playIndex} = this.state;
     const {
       global: { list },
     } = this.props;
     const {content=[]} = list;
     let detail = {};
-    if(playIndex && content.length >= playIndex) {
+    console.log(playIndex)
+    if( content.length >= playIndex || content.length === 0) {
       detail = content[playIndex];
-    }else {
-      detail = content.length>0?content[0]:{};
+    }else if(playIndex !== 0) {
+      this.stopPlay();
     }
     return (
       <div className={styles.main}>
-        <div style={{backgroundImage: `url("${detail.imgUrl}")`}} className={styles.main1}> </div>
+        <div style={{backgroundImage: `url("${detail&&detail.imgUrl}")`}} className={styles.main1}> </div>
         {/* <div className={styles.mengban}></div> */}
         <Row className={styles.div1}>
-          <img src={detail.imgUrl} className={styles.img1} />
-          <Col span={20} offset={2} className={styles.item1}>{detail.title}</Col>
+          <img src={detail&&detail.imgUrl} className={styles.img1} />
+          <Col span={20} offset={2} className={styles.item1}>{detail&&detail.title}</Col>
           <img onClick={this.playAudio} src={playing ? PauseGray:PlayGray} className={styles.img2} />
           <Col className={styles.item2}>
             <Row>
-              <Col span={4}>{playingtime?this.formatterTime(playingtime):null}</Col>
-              <Col span={16} className={styles.all}>
-                <div className={styles.playing} style={{width: (duration) ? `${playingtime/duration*100}%` : duration}}></div>
-              </Col>
-              <Col span={4}>{duration?this.formatterTime(duration):null}</Col>
+              <Col span={4}>{playingtime?this.formatterTime(playingtime):`00:00`}</Col>
+              <div ref={node => this.progressDiv = node}>
+
+                <Col span={16} className={styles.all}
+                  onTouchMove={this.moveProgress}
+                  onTouchStart={this.startChangeTime}
+                  // onTouchEnd={this.touchend}
+                  onClick={this.clickChangeTime}
+                  // onMouseDown={this.mouseDown}
+                  // onMouseMove={this.slideChangeTime}
+                  // onMouseUp={this.mouseUp}
+                  // onMouseLeave={this.mouseLeave}
+                  
+                >
+                  <div 
+                    className={styles.playing} 
+                    style={{width: (duration) ? `${playingtime/duration*100}%` : duration}}
+                  ></div>
+                  {/* <div 
+                    className={styles.buffer} 
+                    style={{width: (buffertime) ? `${buffertime/duration*100}%` : 0}}
+                  ></div> */}
+                </Col>
+              </div>
+              <Col span={4}>{duration?this.formatterTime(duration):`00:00`}</Col>
             </Row>
           </Col>
         </Row>
         {showFix ?
         <Row className={styles.fix1}>
           <Icon type="close" className={styles.close} onClick={this.closeFix}/>
-          <Col span={5}><img src={mgLogo} /></Col>
-          <Col span={13} className={styles.p1}>芒果动听APP 要您一起加入<br/> 加油美好生活！</Col>
+          <Col span={4}><img src={mgLogo} /></Col>
+          <Col span={14} className={styles.p1}>芒果动听APP 邀您一起加入<br/> 加油美好生活！</Col>
           <Col span={6} className={styles.p2} onClick={this.downApp}>下载APP</Col>
         </Row> : null}
         <audio
           id="player"
-          src={detail.playUrl}
+          src={detail&&detail.playUrl}
           style={{display:'none'}}
           ref={node => this.videoContainer = node}
           preload="none" controlsList="nodownload"

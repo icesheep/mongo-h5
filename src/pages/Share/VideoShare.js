@@ -114,8 +114,8 @@ class VideoShare extends Component {
         {showFix ?
         <Row className={styles.fix1}>
           <Icon type="close" className={styles.close} onClick={this.closeFix}/>
-          <Col span={5}><img src={mgLogo} /></Col>
-          <Col span={13} className={styles.p1}>芒果动听APP 要您一起加入<br/> 加油美好生活！</Col>
+          <Col span={4}><img src={mgLogo} /></Col>
+          <Col span={14} className={styles.p1}>芒果动听APP 邀您一起加入<br/> 加油美好生活！</Col>
           <Col span={6} className={styles.p2} onClick={this.downApp}>下载APP</Col>
         </Row> : null}
         {detail.uri ? <VideoJsForReact

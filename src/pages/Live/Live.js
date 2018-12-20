@@ -16,8 +16,33 @@ import Wave from '../../assets/wave.png';
 import playBg from '../../assets/bg-play.png';
 import playLive from '../../assets/player_live.png';
 import bgLive from '../../assets/bg-live.png';
-import music from '../../assets/xiaolin.mp3';
+import music1 from '../../assets/1.mp3';
+import music2 from '../../assets/2.mp3';
+import music3 from '../../assets/3.mp3';
 
+const lastPlayList = [
+  {
+    id: '2018',
+    title: '2018跨年演唱会',
+    desc: '震撼升级的跨年演唱会，即将点燃激情， 唱响青春，为全新的2019年揭开精彩…',
+    imgsrc: Pic,
+    playsrc: music1,
+  },
+  {
+    id: '2017',
+    title: '2017跨年演唱会',
+    desc: '张惠妹献唱经典温暖如初',
+    imgsrc: Pic,
+    playsrc: music2,
+  },
+  {
+    id: '2016',
+    title: '2016跨年演唱会',
+    desc: '张杰六连唱十年金曲超燃LIVE',
+    imgsrc: Pic,
+    playsrc: music3,
+  },
+]
 class Live extends Component {
   state = {
     lastTime: '',
@@ -146,8 +171,9 @@ class Live extends Component {
   };
 
   playLastAudio = (v) => {
+    console.log(v,this.videoContainer.src )
     const {playingLast} = this.state;
-    if(playingLast === v) {
+    if(playingLast === v.id) {
       this.setState({
         playingLast: false,
       }, ()=>{
@@ -155,8 +181,9 @@ class Live extends Component {
       })
     }else {
       this.setState({
-        playingLast: v,
+        playingLast: v.id,
       }, ()=>{
+        this.videoContainer.src  = v.playsrc;
         this.videoContainer.play();
       })
     }
@@ -211,39 +238,20 @@ class Live extends Component {
             往期跨年直播
           </Col>
         </Row>
-        <Row className={styles.div2} onClick = {()=>{this.playLastAudio(2018)}}>
-          <Col span={5} className={styles.leftcol}><img alt="" src={Pic} /></Col>
+        {lastPlayList.map(v => 
+          <Row className={styles.div2} onClick = {()=>{this.playLastAudio(v)}}>
+          <Col span={5} className={styles.leftcol}><img alt="" src={v.imgsrc} /></Col>
           <Col span={16} className={styles.rightcol}>
-            <p className={styles.p1}><span style={{color: playingLast===2018 ?'#EB032A':''}}>2018跨年演唱会</span>{playingLast===2018 ? <div className={styles.p3}>播放中</div>: null}</p>
-            <p className={styles.p2}>震撼升级的跨年演唱会，即将点燃激情， 唱响青春，为全新的2019年揭开精彩…</p>
+            <p className={styles.p1}><span style={{color: playingLast===v.id ?'#EB032A':''}}>{v.title}</span>{playingLast===v.id ? <div className={styles.p3}>播放中</div>: null}</p>
+            <p className={styles.p2}>{v.desc}</p>
           </Col>
           <Col span={3} className={styles.playCol}>
-            <img alt="" src={playingLast!==2018 ? Play : Pause} />
+            <img alt="" src={playingLast!==v.id ? Play : Pause} />
           </Col>
-        </Row>
-        <Row className={styles.div2} onClick = {()=>{this.playLastAudio(2017)}}>
-          <Col span={5} className={styles.leftcol}><img alt="" src={Pic} /></Col>
-          <Col span={16} className={styles.rightcol} style={{marginTop: '.3rem'}}>
-            <p className={styles.p1}><span style={{color: playingLast===2017 ?'#EB032A':''}}>2017跨年演唱会</span>{playingLast===2017 ? <div className={styles.p3}>播放中</div>: null}</p>
-            <p className={styles.p2}>张惠妹献唱经典温暖如初</p>
-          </Col>
-          <Col span={3} className={styles.playCol}>
-            <img alt="" src={playingLast!==2017 ? Play : Pause} />
-          </Col>
-        </Row>
-        <Row className={styles.div2} onClick = {()=>{this.playLastAudio(2016)}}>
-          <Col span={5} className={styles.leftcol}><img alt="" src={Pic} /></Col>
-          <Col span={16} className={styles.rightcol}>
-            <p className={styles.p1}><span style={{color: playingLast===2016 ?'#EB032A':''}}>2016跨年演唱会</span>{playingLast===2016 ? <div className={styles.p3}>播放中</div>: null}</p>
-            <p className={styles.p2}>张杰六连唱十年金曲超燃LIVE</p>
-          </Col>
-          <Col span={3} className={styles.playCol}>
-            <img alt="" src={playingLast!==2016 ? Play : Pause} />
-          </Col>
-        </Row>
+        </Row>)}
         <audio
           id="player"
-          src={music}
+          src={lastPlayList[0].playsrc}
           style={{display:'none'}}
           ref={node => this.videoContainer = node}
           preload="none" controlsList="nodownload"
