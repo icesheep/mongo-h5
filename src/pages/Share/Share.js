@@ -51,7 +51,7 @@ class Share extends Component {
   }
 
   downApp = () => {
-    
+    window.open('https://fm.tingdao.com/html/h5.html')
   }
 
   playAudio = (v,index) => {
