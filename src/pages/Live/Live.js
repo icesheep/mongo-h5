@@ -18,6 +18,9 @@ import playLive from '../../assets/player_live.png';
 import bgLive from '../../assets/bg-live.png';
 import music3 from '../../assets/3.mp3';
 
+//活动开始时间
+const activityStartTime = '2018-12-31 21:00:00'; 
+// 往期活动列表
 const lastPlayList = [
   {
     id: '2018',
@@ -43,12 +46,12 @@ const lastPlayList = [
 ]
 class Live extends Component {
   state = {
-    lastTime: '',
-    livingTime: '',
-    startLive: false,
-    players: null,
-    playing: false,
-    playingLast: false,
+    lastTime: '',  //倒计时
+    livingTime: '',  //直播时间
+    startLive: false,  //直播开始、停止
+    players: null,  //直播播放控件
+    playing: false,  //往期录播播放状态
+    playingLast: false,  //正在播放的往期节目id
     videoJsOptions: {
       preload: 'auto',  // 预加载
       bigPlayButton: {},  // 大按钮
@@ -59,8 +62,8 @@ class Live extends Component {
       playbackRates: [1, 1.5, 2], // 播放倍速
       sources: [  // 视频源
         {
-          src: 'http://prertmp.tingdao.com:91/index.m3u8',
-          type: 'application/x-mpegURL',
+          src: 'http://prertmp.tingdao.com:91/index.m3u8',   //音频地址
+          type: 'application/x-mpegURL',  //音频类型m3u8：application/x-mpegURL，mp3、mp4：video/mp4
           label: 'HLS1',
           withCredentials: false,
           res: 960
@@ -86,7 +89,7 @@ class Live extends Component {
 
   play = () => {
     const {players,playing} = this.state;
-    console.log(players.currentTime())
+    console.log(players.currentTime(),players.duration())
     if(playing) {
       this.setState({
         playing: false
@@ -103,10 +106,11 @@ class Live extends Component {
     
   }
 
+  // 刷新倒计时
   loopData = () => {
     this.requestRef = requestAnimationFrame(() => {
       this.timer = setTimeout(() => {
-        const deadTime = moment('2018-12-31 21:00:00');
+        const deadTime = moment(activityStartTime);
         const now = moment();
         if(deadTime.isAfter(now)) {
           const temp = deadTime.diff(now,'seconds')
@@ -136,6 +140,7 @@ class Live extends Component {
     });
   };
 
+  // 刷新直播时间
   livingData = () => {
     this.requestRef2 = requestAnimationFrame(() => {
       this.timer2 = setTimeout(() => {
@@ -192,45 +197,49 @@ class Live extends Component {
     return (
       <div className={styles.main}>
         {startLive ? 
+          //直播页面
           <Row className={styles.div1}>
-            <div style={{backgroundImage: bgLive}} className={styles.bglive}> </div>
-            {/* <ReactPlayer url="http://prertmp.tingdao.com:91/index.m3u8" controls loop /> */}
-            <VideoJsForReact
-              sourceChanged={(player,players) => {console.log('准备完毕', player,players);this.setState({players})}}
-              onReady={(player,players) => {console.log('准备完毕', player,players);this.setState({players})}}
-              {...this.state.videoJsOptions}
-            />
-            <Col className={styles.item7} onClick={this.play}><img alt="" src={playing ? PauseGray:PlayGray} /></Col>
-            <Col className={styles.item8}>2019湖南卫视跨年演唱会</Col>
-            <img className={styles.item9} src={playLive} />
-            <Col className={styles.item10}>
-              <img alt="" src={Wave} />
-              {livingTime ? <div className={styles.d1}>{livingTime}</div> : null}
-            </Col>
-            <Col className={styles.item4}>
-              <img alt="" src={playBg} />
-            </Col>
-            <Col className={styles.item5}>
-              今年，湖南卫视跨年演唱会即将携全面升级的概念、互动、 舞台以及阵容，重磅开启。震撼升级的跨年演唱会，即将 点燃激情，唱响青春，为全新的2019年揭开精彩序章。
-            </Col>
-            
+            <div style={{backgroundImage: bgLive}} className={styles.bglive}>
+              <Col className={styles.item7} onClick={this.play}><img alt="" src={playing ? PauseGray:PlayGray} /></Col>
+              <Col className={styles.item8}>2019湖南卫视跨年演唱会</Col>
+              <img className={styles.item9} src={playLive} />
+              <Col className={styles.item10}>
+                <img alt="" src={Wave} />
+                {livingTime ? <div className={styles.d1}>{livingTime}</div> : null}
+              </Col>
+            </div>
+            <div style={{backgroundColor: '#191955',paddingTop: '1px'}}>
+              {/* 如需要多个活动页面，复制下面代码，配置图片和文字 */}
+              <Col className={styles.item4}>
+                <img alt="" src={playBg} />
+              </Col>
+              <Col className={styles.item5}>
+                今年，湖南卫视跨年演唱会即将携全面升级的概念、互动、 舞台以及阵容，重磅开启。震撼升级的跨年演唱会，即将 点燃激情，唱响青春，为全新的2019年揭开精彩序章。
+              </Col>
+              {/* 结束 */}
+            </div>
           </Row>:
+          // 预热页面
           <Row className={styles.div1}>
-            <div style={{backgroundImage: bgLive}} className={styles.bglive}> </div>
-            <Col className={styles.item1}>2019湖南卫视跨年演唱会</Col>
-            <Col className={styles.item1}>即将呈现</Col>
-            <Col className={styles.item2}>节目简介：自2005年开创国内跨年演唱会先河起，湖南卫视 十三年间打造出了国内最具影响力和价值的跨年品牌。</Col>
-            <Col className={styles.item3} onClick={this.startLive}>
-              <div className={styles.p1}>距离开始</div>
-              <div className={styles.p2}>{lastTime}</div>
-            </Col>
-            <Col className={styles.item4}>
-              <img alt="" src={bgLive} />
-            </Col>
-            <Col className={styles.item5}>
-              今年，湖南卫视跨年演唱会即将携全面升级的概念、互动、 舞台以及阵容，重磅开启。震撼升级的跨年演唱会，即将 点燃激情，唱响青春，为全新的2019年揭开精彩序章。
-            </Col>
+            <div style={{backgroundImage: bgLive}} className={styles.bglive}> 
+              <Col className={styles.item1}>2019湖南卫视跨年演唱会</Col>
+              <Col className={styles.item1}>即将呈现</Col>
+              <Col className={styles.item2}>节目简介：自2005年开创国内跨年演唱会先河起，湖南卫视 十三年间打造出了国内最具影响力和价值的跨年品牌。</Col>
+              <Col className={styles.item3} onClick={this.startLive}>
+                <div className={styles.p1}>距离开始</div>
+                <div className={styles.p2}>{lastTime}</div>
+              </Col>
+            </div>
+            <div style={{backgroundColor: '#191955'}}>
+              <Col className={styles.item4}>
+                <img alt="" src={bgLive} />
+              </Col>
+              <Col className={styles.item5}>
+                今年，湖南卫视跨年演唱会即将携全面升级的概念、互动、 舞台以及阵容，重磅开启。震撼升级的跨年演唱会，即将 点燃激情，唱响青春，为全新的2019年揭开精彩序章。
+              </Col>
+            </div>
           </Row>}
+        {/* 往期列表 */}
         <Row>
           <Col className={styles.item6}>
             往期跨年直播
@@ -247,6 +256,7 @@ class Live extends Component {
             <img alt="" src={playingLast!==v.id ? Play : Pause} />
           </Col>
         </Row>)}
+        {/* 往期音频播放控件 */}
         <audio
           id="player"
           src={lastPlayList[0].playsrc}
@@ -254,6 +264,12 @@ class Live extends Component {
           ref={node => this.videoContainer = node}
           preload="none" controlsList="nodownload"
         ></audio>
+        {/* 直播音频播放控件 */}
+        <VideoJsForReact
+          sourceChanged={(player,players) => {console.log('准备完毕', player,players);this.setState({players})}}
+          onReady={(player,players) => {console.log('准备完毕', player,players);this.setState({players})}}
+          {...this.state.videoJsOptions}
+        />
       </div>
     );
   }
