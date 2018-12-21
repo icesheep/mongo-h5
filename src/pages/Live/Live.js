@@ -20,6 +20,7 @@ import music3 from '../../assets/3.mp3';
 
 //活动开始时间
 const activityStartTime = '2018-12-31 21:00:00'; 
+const activityendTime = '2019-01-01 00:10:00'; 
 // 往期活动列表
 const lastPlayList = [
   {
@@ -46,6 +47,7 @@ const lastPlayList = [
 ]
 class Live extends Component {
   state = {
+    activityEnd: false,  //直播结束
     lastTime: '',  //倒计时
     livingTime: '',  //直播时间
     startLive: false,  //直播开始、停止
@@ -83,10 +85,13 @@ class Live extends Component {
     cancelAnimationFrame(this.requestRef2);
   }
 
+  // 开始直播
   startLive = () => {
     this.setState({startLive: true})
+    this.livingData();
   }
 
+  // 直播播放、暂停功能
   play = () => {
     const {players,playing} = this.state;
     console.log(players.currentTime(),players.duration())
@@ -134,7 +139,7 @@ class Live extends Component {
             {
               startLive: true,
             }
-          );
+          ,this.livingData);
         }
       }, 1000);
     });
@@ -144,9 +149,10 @@ class Live extends Component {
   livingData = () => {
     this.requestRef2 = requestAnimationFrame(() => {
       this.timer2 = setTimeout(() => {
-        const deadTime = moment('2018-12-31 21:00:00');
+        const deadTime = moment(activityStartTime);
+        const endTime = moment(activityendTime);
         const now = moment();
-        if(!deadTime.isAfter(now)) {
+        if(!deadTime.isAfter(now) && endTime.isAfter(now)) {
           const temp = deadTime.diff(now,'seconds')
           const hour = Math.floor(temp/3600)
           const minute = Math.floor(temp%3600/60)&&`${Math.floor(temp%3600/60)}`.length<2 ? `0${Math.floor(temp%3600/60)}` : Math.floor(temp%3600/60)
@@ -166,6 +172,7 @@ class Live extends Component {
           this.setState(
             {
               startLive: false,
+              activityEnd: now.isAfter(endTime),
             }
           );
         }
@@ -173,6 +180,7 @@ class Live extends Component {
     });
   };
 
+  // 往期音频播放、暂停
   playLastAudio = (v) => {
     console.log(v,this.videoContainer.src )
     const {playingLast} = this.state;
@@ -193,7 +201,8 @@ class Live extends Component {
   }
 
   render() {
-    const {lastTime, startLive, playing, livingTime, playingLast} = this.state;
+    const {lastTime, startLive, playing, livingTime, playingLast, activityEnd} = this.state;
+    console.log(this.state)
     return (
       <div className={styles.main}>
         {startLive ? 
@@ -216,10 +225,11 @@ class Live extends Component {
               <Col className={styles.item5}>
                 今年，湖南卫视跨年演唱会即将携全面升级的概念、互动、 舞台以及阵容，重磅开启。震撼升级的跨年演唱会，即将 点燃激情，唱响青春，为全新的2019年揭开精彩序章。
               </Col>
-              {/* 结束 */}
+              {/* */}
             </div>
           </Row>:
-          // 预热页面
+          (!activityEnd ? 
+            // 预热页面
           <Row className={styles.div1}>
             <div style={{backgroundImage: bgLive}} className={styles.bglive}> 
               <Col className={styles.item1}>2019湖南卫视跨年演唱会</Col>
@@ -238,7 +248,25 @@ class Live extends Component {
                 今年，湖南卫视跨年演唱会即将携全面升级的概念、互动、 舞台以及阵容，重磅开启。震撼升级的跨年演唱会，即将 点燃激情，唱响青春，为全新的2019年揭开精彩序章。
               </Col>
             </div>
-          </Row>}
+          </Row> : 
+          // 直播结束页面
+          <Row className={styles.div1}>
+            <div style={{backgroundImage: bgLive}} className={styles.bglive}> 
+              <Col className={styles.item1}>2019湖南卫视跨年演唱会</Col>
+              <Col className={styles.item2}>节目简介：自2005年开创国内跨年演唱会先河起，湖南卫视 十三年间打造出了国内最具影响力和价值的跨年品牌。</Col>
+              <Col className={styles.item3}>
+                <div className={styles.p1}>直播已结束</div>
+              </Col>
+            </div>
+            <div style={{backgroundColor: '#191955'}}>
+              <Col className={styles.item4}>
+                <img alt="" src={bgLive} />
+              </Col>
+              <Col className={styles.item5}>
+                今年，湖南卫视跨年演唱会即将携全面升级的概念、互动、 舞台以及阵容，重磅开启。震撼升级的跨年演唱会，即将 点燃激情，唱响青春，为全新的2019年揭开精彩序章。
+              </Col>
+            </div>
+          </Row> )}
         {/* 往期列表 */}
         <Row>
           <Col className={styles.item6}>

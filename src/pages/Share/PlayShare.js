@@ -13,13 +13,12 @@ import PauseGray from '../../assets/pause-gray.png';
 }))
 class PlayShare extends Component {
   state = {
-    playingtime: 0,
-    buffertime: 0,
-    duration: 0,
-    playing: false,
-    showFix: true,
-    playIndex: 0,
-    mouseDown:false,
+    playingtime: 0,   //播放时间 
+    buffertime: 0,   //缓冲时间
+    duration: 0,   //总时长
+    playing: false,   //播放状态
+    showFix: true,   //下载提示状态
+    playIndex: 0,   //当前播放曲目index
   };
 
   componentDidMount() {
@@ -28,7 +27,7 @@ class PlayShare extends Component {
     } = this.props;
     const {content=[]} = list;
     const {type,cid,index} = this.props.location.query;
-    console.log(type,cid,index)
+    // 如果参数中有index，代表是专辑分享界面跳转过来的
     if(index>=0) {
       this.setState({
         playIndex: index
@@ -51,7 +50,6 @@ class PlayShare extends Component {
         "cid": cid||"189477276583936"
       }
     };
-    console.log(params)
     dispatch({
       type: 'global/webview',
       payload: params,
@@ -63,6 +61,7 @@ class PlayShare extends Component {
     cancelAnimationFrame(this.requestRef);
   }
 
+  // 播放时间刷新
   PlayingMusic = () => {
     this.requestRef = requestAnimationFrame(() => {
       this.timer = setTimeout(() => {
@@ -104,6 +103,7 @@ class PlayShare extends Component {
     });
   };
 
+  // 格式化时间
   formatterTime = (time) => {
     let minutes = Math.floor(Math.round(time)/60);
     let seconds = Math.floor(Math.round(time)%60);
@@ -116,16 +116,19 @@ class PlayShare extends Component {
     return `${minutes}:${seconds}`
   }
 
+  // 关闭弹窗
   closeFix = () => {
     this.setState({
       showFix: false,
     })
   }
 
+  // 下载app
   downApp = () => {
     window.open('https://fm.tingdao.com/html/h5.html')
   }
 
+  // 播放、暂停功能
   playAudio = () => {
     const {playing,playIndex} = this.state;
     if(playing) {
@@ -147,6 +150,7 @@ class PlayShare extends Component {
     }
   }
 
+  // 停止播放
   stopPlay = () => {
     this.setState({
       playIndex: -1,
@@ -173,26 +177,7 @@ class PlayShare extends Component {
     }
     this.setTimeOnPc((e.pageX-this.progressDiv.clientWidth*0.1666666667)/(this.progressDiv.clientWidth*0.6666666667)*duration)
   }
-  //PC端拖动进度条
-  mouseDown = () =>{
-      this.setState({
-          mouseDown:true
-      });
-  }
-  slideChangeTime = (e) =>{
-      if(this.state.mouseDown){
-          const {duration} = this.state;
-          if(!e.pageX&& !duration){
-              return
-          }
-          this.setTimeOnPc((e.pageX-this.progressDiv.clientWidth*0.1666666667)/(this.progressDiv.clientWidth*0.6666666667)*duration)
-      }
-  }
-  mouseUp = () =>{
-      this.setState({
-          mouseDown:false
-      });
-  }
+  // 开始拖动
   startChangeTime = (e) =>{
     var point = this.getPoint(e);
     const {duration} = this.state;
@@ -201,6 +186,7 @@ class PlayShare extends Component {
     }
     this.setTimeOnPc((point.pageX-this.progressDiv.clientWidth*0.1666666667)/(this.progressDiv.clientWidth*0.6666666667)*duration)
   }
+  // 拖动播放条
   moveProgress = (e) =>{
     e.preventDefault(); //阻止默认行为
     var point = this.getPoint(e);
@@ -210,43 +196,10 @@ class PlayShare extends Component {
     }
     this.setTimeOnPc((point.pageX-this.progressDiv.clientWidth*0.1666666667)/(this.progressDiv.clientWidth*0.6666666667)*duration)
   }
-  // touchend = (e) =>{
-  //   var point = this.getPoint(e);
-  //   const {duration} = this.state;
-  //   if(!point.pageX&& !duration){
-  //       return
-  //   }
-  //   this.setTimeOnPc((point.pageX-this.progressDiv.clientWidth*0.1666666667)/(this.progressDiv.clientWidth*0.6666666667)*duration)
-  // }
   //默认以第一个手指的位置计算
   getPoint =(e) =>{
     return e.touches ? e.touches[0] : e;
   };
-
-  getTime = (musicTime) =>{
-    if(musicTime){
-        if(musicTime<60){
-            musicTime = `00:${musicTime<10?`0${musicTime}`:musicTime}`
-          }else{
-              musicTime = `${parseInt(musicTime/60)<10?`0${parseInt(musicTime/60)}`:parseInt(musicTime/60)}:${musicTime%60<10?`0${musicTime%60}`:musicTime%60}`
-          }
-          return musicTime
-
-      }else{
-          return `00:00`
-      }
-  }
-  setTime = (time) =>{
-    let audio = this.videoContainer;
-    if(audio.currentTime !== 0) {
-        audio.currentTime = time;
-        this.setState(
-          {
-            playingtime: time,
-          }
-        );
-    }
-  }
 
   render() {
     const {showFix, playing,buffertime, duration, playingtime, playIndex} = this.state;
@@ -255,7 +208,6 @@ class PlayShare extends Component {
     } = this.props;
     const {content=[]} = list;
     let detail = {};
-    console.log(playIndex)
     if( content.length >= playIndex || content.length === 0) {
       detail = content[playIndex];
     }else if(playIndex !== 0) {
@@ -277,13 +229,7 @@ class PlayShare extends Component {
                 <Col span={16} className={styles.all}
                   onTouchMove={this.moveProgress}
                   onTouchStart={this.startChangeTime}
-                  // onTouchEnd={this.touchend}
                   onClick={this.clickChangeTime}
-                  // onMouseDown={this.mouseDown}
-                  // onMouseMove={this.slideChangeTime}
-                  // onMouseUp={this.mouseUp}
-                  // onMouseLeave={this.mouseLeave}
-                  
                 >
                   <div 
                     className={styles.playing} 
