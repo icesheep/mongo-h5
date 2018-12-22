@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 // import { connect } from 'dva';
 import { Row, Col } from 'antd';
+import TweenOne from 'rc-tween-one';
 import moment from 'moment';
 // import VideoJsForReact from 'videojs-for-react';
 import VideoJsForReact from '@/components/Videojs';
@@ -50,7 +51,7 @@ class Live extends Component {
     activityEnd: false,  //直播结束
     lastTime: '',  //倒计时
     livingTime: '',  //直播时间
-    startLive: false,  //直播开始、停止
+    startLive: moment().isAfter(moment(activityStartTime)),  //直播开始、停止
     players: null,  //直播播放控件
     playing: false,  //往期录播播放状态
     playingLast: false,  //正在播放的往期节目id
@@ -87,8 +88,8 @@ class Live extends Component {
 
   // 开始直播
   startLive = () => {
-    this.setState({startLive: true})
-    this.livingData();
+    // this.setState({startLive: true})
+    // this.livingData();
   }
 
   // 直播播放、暂停功能
@@ -153,7 +154,7 @@ class Live extends Component {
         const endTime = moment(activityendTime);
         const now = moment();
         if(!deadTime.isAfter(now) && endTime.isAfter(now)) {
-          const temp = deadTime.diff(now,'seconds')
+          const temp = now.diff(deadTime,'seconds')
           const hour = Math.floor(temp/3600)
           const minute = Math.floor(temp%3600/60)&&`${Math.floor(temp%3600/60)}`.length<2 ? `0${Math.floor(temp%3600/60)}` : Math.floor(temp%3600/60)
           const second = temp%3600%60&&`${temp%3600%60}`.length<2 ? `0${temp%3600%60}` : temp%3600%60
@@ -200,8 +201,10 @@ class Live extends Component {
     }
   }
 
+  getHeight = (i) => this.state.playing ? this.wave&&(Math.random()*(this.wave.clientHeight))||0 : this.wave&&(this.wave.clientHeight*i/10)||0
+  
   render() {
-    const {lastTime, startLive, playing, livingTime, playingLast, activityEnd} = this.state;
+    const {lastTime, startLive, playing, livingTime, playingLast, activityEnd,} = this.state;
     console.log(this.state)
     return (
       <div className={styles.main}>
@@ -213,7 +216,27 @@ class Live extends Component {
               <Col className={styles.item8}>2019湖南卫视跨年演唱会</Col>
               <img className={styles.item9} src={playLive} />
               <Col className={styles.item10}>
-                <img alt="" src={Wave} />
+                {/* <img alt="" src={Wave} /> */}
+                <div className={styles.wave} ref={(ref)=>{this.wave=ref}}>
+                  <TweenOne animation={{ 
+                    height:this.getHeight(2)
+                  }} className={styles.wave1} />
+                  <TweenOne animation={{ 
+                    height:this.getHeight(6)
+                  }} className={styles.wave1} />
+                  <TweenOne animation={{ 
+                    height:this.getHeight(10)
+                  }} className={styles.wave1} />
+                  <TweenOne animation={{ 
+                    height:this.getHeight(10)
+                  }} className={styles.wave1} />
+                  <TweenOne animation={{ 
+                    height:this.getHeight(6)
+                  }} className={styles.wave1} />
+                  <TweenOne animation={{ 
+                    height:this.getHeight(2)
+                  }} className={styles.wave1} />
+                </div>
                 {livingTime ? <div className={styles.d1}>{livingTime}</div> : null}
               </Col>
             </div>
