@@ -185,18 +185,25 @@ class Live extends Component {
   playLastAudio = (v) => {
     console.log(v,this.videoContainer.src )
     const {playingLast} = this.state;
-    if(playingLast === v.id) {
-      this.setState({
-        playingLast: false,
-      }, ()=>{
-        this.videoContainer.pause();
-      })
+    if(v) {
+      
+      if(playingLast === v.id) {
+        this.setState({
+          playingLast: false,
+        }, ()=>{
+          this.videoContainer.pause();
+        })
+      }else {
+        this.setState({
+          playingLast: v.id,
+        }, ()=>{
+          this.videoContainer.src  = v.playsrc;
+          this.videoContainer.play();
+        })
+      }
     }else {
       this.setState({
-        playingLast: v.id,
-      }, ()=>{
-        this.videoContainer.src  = v.playsrc;
-        this.videoContainer.play();
+        playingLast: false,
       })
     }
   }
@@ -314,6 +321,7 @@ class Live extends Component {
           style={{display:'none'}}
           ref={node => this.videoContainer = node}
           preload="none" controlsList="nodownload"
+          onEnded={this.playLastAudio}
         ></audio>
         {/* 直播音频播放控件 */}
         <VideoJsForReact
