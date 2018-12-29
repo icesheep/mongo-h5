@@ -94,8 +94,8 @@ class Live extends Component {
 
   // 直播播放、暂停功能
   play = () => {
-    const {players,playing} = this.state;
-    console.log(players.currentTime(),players.duration())
+    const {players,playing,playingLast} = this.state;
+    // console.log(players.currentTime(),players.duration())
     if(playing) {
       this.setState({
         playing: false
@@ -107,6 +107,9 @@ class Live extends Component {
         playing: true
       },() => {
         players.play();
+        if(playingLast) {
+          this.playLastAudio(lastPlayList.find(e=>e.id===playingLast));
+        }
       })
     }
     
@@ -183,8 +186,7 @@ class Live extends Component {
 
   // 往期音频播放、暂停
   playLastAudio = (v) => {
-    console.log(v,this.videoContainer.src )
-    const {playingLast} = this.state;
+    const {players,playing,playingLast} = this.state;
     if(v) {
       
       if(playingLast === v.id) {
@@ -196,8 +198,14 @@ class Live extends Component {
       }else {
         this.setState({
           playingLast: v.id,
+          playing: false,
         }, ()=>{
-          this.videoContainer.src  = v.playsrc;
+          if(playing) {
+            players.pause();
+          }
+          if(this.videoContainer.src  !== v.playsrc){
+            this.videoContainer.src = v.playsrc;
+          };
           this.videoContainer.play();
         })
       }
@@ -212,7 +220,7 @@ class Live extends Component {
   
   render() {
     const {lastTime, startLive, playing, livingTime, playingLast, activityEnd,} = this.state;
-    console.log(this.state)
+    // console.log(this.state)
     return (
       <div className={styles.main}>
         {startLive ? 
