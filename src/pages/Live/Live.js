@@ -20,7 +20,7 @@ import bgLive from '../../assets/bg-live.png';
 import music3 from '../../assets/3.mp3';
 
 //活动开始时间
-const activityStartTime = '2018-12-31 21:00:00'; 
+const activityStartTime = '2018-12-29 21:00:00'; 
 const activityendTime = '2019-01-01 00:10:00'; 
 // 往期活动列表
 const lastPlayList = [
@@ -65,7 +65,7 @@ class Live extends Component {
       playbackRates: [1, 1.5, 2], // 播放倍速
       sources: [  // 视频源
         {
-          src: 'http://prertmp.tingdao.com:91/index.m3u8',   //音频地址
+          src: 'http://mgtj-live.oss-cn-shanghai.aliyuncs.com/h2/index.m3u8',   //音频地址
           type: 'application/x-mpegURL',  //音频类型m3u8：application/x-mpegURL，mp3、mp4：video/mp4
           label: 'HLS1',
           withCredentials: false,
@@ -95,7 +95,7 @@ class Live extends Component {
   // 直播播放、暂停功能
   play = () => {
     const {players,playing,playingLast} = this.state;
-    // console.log(players.currentTime(),players.duration())
+    console.log(players.currentTime(),players.duration())
     if(playing) {
       this.setState({
         playing: false
@@ -106,7 +106,18 @@ class Live extends Component {
       this.setState({
         playing: true
       },() => {
-        players.play();
+        let playPromise = players.play();
+        if (playPromise) {
+          playPromise.then(() => {
+              // 音频加载成功
+              setTimeout(() => {
+                  // 后续操作
+                  console.log("done");
+              }, 1000); // audio.duration 为音频的时长单位为秒
+          }).catch((e) => {
+              console.log("Operation is too fast, audio play fails");
+          });
+        }
         if(playingLast) {
           this.playLastAudio(lastPlayList.find(e=>e.id===playingLast));
         }

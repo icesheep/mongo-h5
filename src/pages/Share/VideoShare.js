@@ -85,7 +85,18 @@ class VideoShare extends Component {
       this.setState({
         playing: true
       },() => {
-        players.play();
+        let playPromise = players.play();
+        if (playPromise) {
+          playPromise.then(() => {
+              // 音频加载成功
+              setTimeout(() => {
+                  // 后续操作
+                  console.log("done");
+              }, 1000); // audio.duration 为音频的时长单位为秒
+          }).catch((e) => {
+              console.log("Operation is too fast, audio play fails");
+          });
+        }
       })
     }
     
