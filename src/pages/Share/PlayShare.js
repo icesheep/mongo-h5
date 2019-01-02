@@ -17,7 +17,7 @@ class PlayShare extends Component {
     buffertime: 0,   //缓冲时间
     duration: 0,   //总时长
     playing: false,   //播放状态
-    showFix: true,   //下载提示状态
+    showFix: false,   //下载提示状态
     playIndex: 0,   //当前播放曲目index
   };
 
@@ -107,12 +107,8 @@ class PlayShare extends Component {
   formatterTime = (time) => {
     let minutes = Math.floor(Math.round(time)/60);
     let seconds = Math.floor(Math.round(time)%60);
-    if(minutes < 10) {
-      minutes = `0${minutes}`
-    }
-    if(seconds < 10) {
-      seconds = `0${seconds}`
-    }
+    minutes = `0${minutes}`.substr(-2);
+    seconds = `0${seconds}`.substr(-2);
     return `${minutes}:${seconds}`
   }
 
@@ -225,20 +221,23 @@ class PlayShare extends Component {
             <Row>
               <Col span={4}>{playingtime?this.formatterTime(playingtime):`00:00`}</Col>
               <div ref={node => this.progressDiv = node}>
-
                 <Col span={16} className={styles.all}
-                  onTouchMove={this.moveProgress}
-                  onTouchStart={this.startChangeTime}
                   onClick={this.clickChangeTime}
                 >
                   <div 
                     className={styles.playing} 
                     style={{width: (duration) ? `${playingtime/duration*100}%` : duration}}
                   ></div>
-                  {/* <div 
+                  <div 
+                    onTouchMove={this.moveProgress}
+                    onTouchStart={this.startChangeTime}
+                    className={styles.dot} 
+                    style={{left: (duration) ? `${playingtime/duration*100}%` : duration}}
+                  ></div>
+                  <div 
                     className={styles.buffer} 
                     style={{width: (buffertime) ? `${buffertime/duration*100}%` : 0}}
-                  ></div> */}
+                  ></div>
                 </Col>
               </div>
               <Col span={4}>{duration?this.formatterTime(duration):`00:00`}</Col>

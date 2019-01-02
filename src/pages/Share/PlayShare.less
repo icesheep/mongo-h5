@@ -74,7 +74,7 @@
       line-height:0.4rem;
       text-align: center;
       .all {
-        background-color: #D8D8D8;
+        background-color: rgba(255,255,255,.1);
         border-radius: 0.1333rem;
         height: 0.0533rem;
         margin-top: 0.1333rem;
@@ -83,10 +83,22 @@
         background-color: red;
         height: 100%;
       }
+      .dot {
+        top: -4px;
+        right: -4px;
+        width: 10px;
+        height: 10px;
+        opacity: 1;
+        position: absolute;
+        border-radius: 10px;
+        background: red;
+        cursor: pointer;
+      }
       .buffer {
-        background-color: gray;
+        background-color: rgba(255,255,255,.2);
         height: 100%;
         position: absolute;
+        position: -2px;
       }
     }
     .img2 {
