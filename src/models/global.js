@@ -1,10 +1,11 @@
-import { queryList , getList} from '@/services/api';
+import { queryList , querySinger} from '@/services/api';
 
 export default {
   namespace: 'global',
 
   state: {
     list: {},
+    singerInfo: {},
   },
 
   effects: {
@@ -15,6 +16,13 @@ export default {
         payload: data&&data.biz || {},
       });
     },
+    *singer({payload}, { call, put }) {
+      const data = yield call(querySinger,payload);
+      yield put({
+        type: 'saveSinger',
+        payload: data&&data.biz || {},
+      });
+    },
   },
 
   reducers: {
@@ -22,6 +30,12 @@ export default {
       return {
         ...state,
         list: payload,
+      };
+    },
+    saveSinger(state, { payload }) {
+      return {
+        ...state,
+        singerInfo: payload,
       };
     },
   },
