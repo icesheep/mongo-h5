@@ -11,7 +11,7 @@ import PauseImg from '../../../assets/singer/pause.png';
 class SingerLive extends Component {
   constructor(props) {
     super(props);
-    this.isApp = navigator.userAgent.includes('TingShuo');
+    this.isApp = navigator.userAgent.includes('DongTing');
     this.appPlaying = false;
     this.state = {
       players: null, //直播播放控件
