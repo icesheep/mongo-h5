@@ -58,6 +58,8 @@ class Singer extends Component {
       banner_title,
       data_list = [],
       desc,
+      id : playId,
+      type : playType,
     } = singerInfo;
     let { begin_time, end_time, type, msg } = banner_ext;
     // begin_time = '2019-01-05 22:23:23';end_time = '2019-01-05 23:11:11';
@@ -84,6 +86,8 @@ class Singer extends Component {
               data_list={data_list}
               msg={msg}
               desc={desc}
+              playId={playId}
+              playType={playType}
               refresh={this.refresh}
             />
           ) : (

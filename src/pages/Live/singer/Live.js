@@ -58,14 +58,14 @@ class SingerLive extends Component {
 
   playInApp = () => {
     const { playing } = this.state;
-    const { banner_playurl } = this.props;
+    const { banner_playurl, playType, playId } = this.props;
     if (playing) {
       this.setState(
         {
           playing: false,
         },
         () => {
-          WebView_getGeShouLiveInfo('1', '1', banner_playurl, function(data) {
+          WebView_getGeShouLiveInfo(playId, playType, banner_playurl, function(data) {
             console.log(data);
           });
         }
@@ -156,8 +156,8 @@ class SingerLive extends Component {
           </div>
           <div className={styles.item5}>{desc}</div>
           {data_list.length > 0 &&
-            data_list.map(v => (
-              <div style={{ backgroundImage: `url(${v.images})` }} className={styles.item6} />
+            data_list.map((v,index) => (
+              <div key={index} style={{ backgroundImage: `url(${v.images})` }} className={styles.item6} />
             ))}
         </div>
         {/* 直播音频播放控件 */}
