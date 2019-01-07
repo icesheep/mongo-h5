@@ -19,8 +19,8 @@ class SingerLive extends Component {
       videoJsOptions: {
         preload: 'auto', // 预加载
         bigPlayButton: {}, // 大按钮
-        autoplay: false, // 自动播放
-        controls: true, // 是否开启控制栏
+        autoplay: true, // 自动播放
+        controls: false, // 是否开启控制栏
         width: 0, // 播放器宽度
         height: 0, // 播放器高度
         playbackRates: [1, 1.5, 2], // 播放倍速
@@ -65,6 +65,7 @@ class SingerLive extends Component {
       that.appPlaying = true;
     });
   }
+
   playInApp = () => {
     const { playing } = this.state;
     if (!this.appPlaying) {
@@ -99,10 +100,11 @@ class SingerLive extends Component {
 
   // 直播播放、暂停功能
   play = () => {
+    const { players, playing } = this.state;
+    if(players.played) players.pause();
     if (this.isApp) {
       this.playInApp();
     } else {
-      const { players, playing } = this.state;
       if (playing) {
         this.setState(
           {
