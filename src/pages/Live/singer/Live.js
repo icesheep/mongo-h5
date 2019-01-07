@@ -11,7 +11,8 @@ import PauseImg from '../../../assets/singer/pause.png';
 class SingerLive extends Component {
   constructor(props) {
     super(props);
-    this.isApp = WebView_isDongTing();
+    this.isApp = navigator.userAgent.includes('TingShuo');
+    this.appPlaying = false;
     this.state = {
       players: null, //直播播放控件
       playing: false, //播放状态
@@ -56,31 +57,43 @@ class SingerLive extends Component {
     }, 1000);
   };
 
+  appFirstPlay = () => {
+    const that = this;
+    const { banner_title, banner_playurl, playType, playId } = this.props;
+    WebView_getGeShouLiveInfo(playId, playType, banner_playurl,banner_title, function(data) {
+      console.log(data);
+      that.appPlaying = true;
+    });
+  }
   playInApp = () => {
     const { playing } = this.state;
-    const { banner_playurl, playType, playId } = this.props;
-    if (playing) {
-      this.setState(
-        {
-          playing: false,
-        },
-        () => {
-          WebView_getGeShouLiveInfo(playId, playType, banner_playurl, function(data) {
-            console.log(data);
-          });
-        }
-      );
-    } else {
+    if (!this.appPlaying) {
       this.setState(
         {
           playing: true,
         },
-        () => {
-          WebView_getGeShouLiveInfo('1', '1', banner_playurl, function(data) {
-            console.log(data);
-          });
-        }
+        this.appFirstPlay
       );
+    } else {
+      if(playing) {
+        this.setState(
+          {
+            playing: false,
+          },
+          () => {
+            WebView_pauseOrResumeVideo(false);
+          }
+        );
+      }else {
+        this.setState(
+          {
+            playing: true,
+          },
+          () => {
+            WebView_pauseOrResumeVideo(true);
+          }
+        );
+      }
     }
   };
 
