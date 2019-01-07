@@ -105,9 +105,9 @@ class SingerLive extends Component {
             playing: true,
           },
           () => {
-            setTimeout(() => {
+            // setTimeout(() => {
               players.play();
-            }, 10);
+            // }, 10);
           }
         );
       }

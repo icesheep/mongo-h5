@@ -4,41 +4,42 @@ class Wave extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.arr =[];
+    this.v = 2;
+    this.devide = 6;
   }
 
   componentDidMount() {
-    this.drawCanvas();
+    // this.drawCanvas();
+    this.requestRef = window.requestAnimationFrame(this.drawCanvas);
   }
 
   componentWillUnmount() {
-    clearTimeout(this.timer);
+    // clearTimeout(this.timer);
     cancelAnimationFrame(this.requestRef);
   }
 
   drawCanvas = () => {
-    this.requestRef = window.requestAnimationFrame(() => {
-      this.timer = setTimeout(() => {
-        if (this.canvas.getContext) {
-          var ctx = this.canvas.getContext('2d');
-          ctx.fillStyle = '#F7105C';
-          ctx.clearRect(0, 0, this.canvas.offsetWidth, this.canvas.offsetHeight);
-          let lastPointX = 0,
-            lastPointY = 0;
-          for (let i = 0; i <= this.canvas.offsetWidth; i += 7) {
-            // ctx.fillRect(i, temp, 1, 1);
-            let t = parseInt(Math.random() * this.canvas.offsetHeight);
-            ctx.fillRect(i, this.canvas.offsetHeight - t, 1, t);
-            // ctx.beginPath();
-            // ctx.moveTo(i, temp);
-            // ctx.lineTo(lastPointX, lastPointY);
-            // ctx.lineTo(lastPointX+1, lastPointY+1);
-            // ctx.lineTo(i+1, temp+1);
-            // ctx.fill();
-          }
+    if (this.canvas.getContext) {
+      var ctx = this.canvas.getContext('2d');
+      ctx.fillStyle = '#F7105C';
+      ctx.clearRect(0, 0, this.canvas.offsetWidth, this.canvas.offsetHeight);
+      for (let i = 0; i <= this.canvas.offsetWidth; i += this.devide) {
+        if(this.arr.length > Math.floor(i/this.devide)) {
+          this.arr[Math.floor(i/this.devide)].height = this.arr[Math.floor(i/this.devide)].height + this.arr[Math.floor(i/this.devide)].speed;
+        }else {
+          let t = parseInt(Math.random() * this.canvas.offsetHeight);
+          let v = (0.2 + Math.random()).toFixed(2);
+          this.arr.push({height: t, speed: v});
         }
-        this.drawCanvas();
-      }, 500);
-    });
+        if (this.arr[Math.floor(i/this.devide)].height + this.arr[Math.floor(i/this.devide)].speed > this.canvas.offsetHeight || 
+        this.arr[Math.floor(i/this.devide)].height + this.arr[Math.floor(i/this.devide)].speed < 0) {
+          this.arr[Math.floor(i/this.devide)].speed = -this.arr[Math.floor(i/this.devide)].speed;
+        }
+        ctx.fillRect(i, this.canvas.offsetHeight - this.arr[Math.floor(i/this.devide)].height, 2, this.arr[Math.floor(i/this.devide)].height);
+      }
+    }
+    this.requestRef = window.requestAnimationFrame(this.drawCanvas);
   };
 
   render() {
