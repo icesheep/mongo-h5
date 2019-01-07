@@ -4,10 +4,8 @@ import { Row, Col } from 'antd';
 import styles from './Activities.less';
 import Pic from '../../assets/p1.png';
 
-
 class LoginPage extends Component {
-  state = {
-  };
+  state = {};
 
   render() {
     return (
@@ -18,7 +16,9 @@ class LoginPage extends Component {
           <Col className={styles.item2}>即将呈现</Col>
         </Row>
         <Row className={styles.div2}>
-          <Col span={8} className={styles.leftcol}><img alt="" src={Pic} /></Col>
+          <Col span={8} className={styles.leftcol}>
+            <img alt="" src={Pic} />
+          </Col>
           <Col span={16} className={styles.rightcol}>
             <p className={styles.p1}>2018湖南跨年演唱会</p>
             <p className={styles.p2}>开始时间：2018.12.30-21：00</p>

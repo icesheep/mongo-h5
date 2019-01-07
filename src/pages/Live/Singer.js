@@ -8,94 +8,101 @@ import Live from './singer/Live';
 import PreLive from './singer/PreLive';
 import End from './singer/End';
 
-@connect(({global}) => ({
+@connect(({ global }) => ({
   global,
 }))
 class Singer extends Component {
-  state = {
-    
-  };
+  state = {};
 
   componentDidMount() {
     this.getData();
   }
 
-  componentWillUnmount() {
-
-  }
+  componentWillUnmount() {}
 
   getData = () => {
     const { dispatch } = this.props;
     const params = {
-      "base" : {
-        "userid" : "1810232029531260",
-        "caller" : "18514281314",
-        "imei" : "db658275cf708690c350ec01b3f6e863db6627a4",
-        "ua" : "apple|iPhone|iPhone9,1|12.0.1|750*1334",
-        "version" : "2.1",
-        "osid" : "ios",
-        "apn" : "wifi",
-        "df" : "22010000"
+      base: {
+        userid: '1810232029531260',
+        caller: '18514281314',
+        imei: 'db658275cf708690c350ec01b3f6e863db6627a4',
+        ua: 'apple|iPhone|iPhone9,1|12.0.1|750*1334',
+        version: '2.1',
+        osid: 'ios',
+        apn: 'wifi',
+        df: '22010000',
       },
-      "param" : {
-        "periodoftime": "20190101",
-      }
+      param: {
+        periodoftime: '20190101',
+      },
     };
     dispatch({
       type: 'global/singer',
       payload: params,
     });
-  }
+  };
 
   refresh = () => {
     this.getData();
-  }
-  
+  };
+
   render() {
     const {
-      global: {singerInfo},
+      global: { singerInfo },
     } = this.props;
-    const {banner_ext = {}, banner_images, banner_playurl, banner_title, data_list = [], desc} = singerInfo;
-    let {begin_time, end_time, type, msg} = banner_ext;
+    const {
+      banner_ext = {},
+      banner_images,
+      banner_playurl,
+      banner_title,
+      data_list = [],
+      desc,
+    } = singerInfo;
+    let { begin_time, end_time, type, msg } = banner_ext;
     // begin_time = '2019-01-05 22:23:23';end_time = '2019-01-05 23:11:11';
     return (
-      <div style={{height: '100%'}}>
+      <div style={{ height: '100%' }}>
         {type == 1 ? (
-          moment().isBefore(moment(begin_time)) ? 
-          <Ready 
-            begin_time={begin_time}
+          moment().isBefore(moment(begin_time)) ? (
+            <Ready
+              begin_time={begin_time}
+              banner_images={banner_images}
+              banner_playurl={banner_playurl}
+              banner_title={banner_title}
+              data_list={data_list}
+              desc={desc}
+              refresh={this.refresh}
+            />
+          ) : moment().isBefore(moment(end_time)) ? (
+            <Live
+              begin_time={begin_time}
+              end_time={end_time}
+              banner_images={banner_images}
+              banner_playurl={banner_playurl}
+              banner_title={banner_title}
+              data_list={data_list}
+              msg={msg}
+              desc={desc}
+              refresh={this.refresh}
+            />
+          ) : (
+            <End
+              banner_images={banner_images}
+              banner_playurl={banner_playurl}
+              banner_title={banner_title}
+              data_list={data_list}
+            />
+          )
+        ) : (
+          <PreLive
             banner_images={banner_images}
             banner_playurl={banner_playurl}
             banner_title={banner_title}
             data_list={data_list}
             desc={desc}
-            refresh={this.refresh}
-          /> : 
-          (moment().isBefore(moment(end_time)) ?
-          <Live 
-            begin_time={begin_time}
-            end_time={end_time}
-            banner_images={banner_images}
-            banner_playurl={banner_playurl}
-            banner_title={banner_title}
-            data_list={data_list}
-            msg={msg}
-            desc={desc}
-            refresh={this.refresh}
-          /> :
-          <End 
-            banner_images={banner_images}
-            banner_playurl={banner_playurl}
-            banner_title={banner_title}
-            data_list={data_list}
-          />)
-        ) : <PreLive 
-          banner_images={banner_images}
-          banner_playurl={banner_playurl}
-          banner_title={banner_title}
-          data_list={data_list}
-          desc={desc}
-        />}
+          />
+        )}
       </div>
     );
   }

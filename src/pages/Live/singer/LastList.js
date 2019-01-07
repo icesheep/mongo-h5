@@ -10,15 +10,11 @@ class LastList extends Component {
     super(props);
   }
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
-  componentWillUnmount() {
-    
-  }
+  componentWillUnmount() {}
 
   render() {
-    
     return (
       <div className={styles.main}>
         <div className={styles.div1}>
@@ -40,7 +36,7 @@ class LastList extends Component {
               <div className={styles.intro}>这里显示一行简介，这里显示一行简介。这里显示介…</div>
             </div>
           </div>
-        </div> 
+        </div>
         <div className={styles.div1}>
           <div className={styles.title}>20180121期</div>
           <div className={styles.list}>
@@ -60,7 +56,7 @@ class LastList extends Component {
               <div className={styles.intro}>这里显示一行简介，这里显示一行简介。这里显示介…</div>
             </div>
           </div>
-        </div> 
+        </div>
       </div>
     );
   }

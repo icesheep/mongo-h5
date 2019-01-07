@@ -6,29 +6,20 @@ import IntroImg from '../../../assets/singer/intro.png';
 class SingerEnd extends Component {
   constructor(props) {
     super(props);
-    
   }
 
-  componentDidMount() {
+  componentDidMount() {}
 
-  }
-
-  componentWillUnmount() {
-   
-  }
+  componentWillUnmount() {}
 
   render() {
     // console.log(this.state)
-    const {banner_images, banner_playurl, banner_title, data_list} = this.props;
+    const { banner_images, banner_playurl, banner_title, data_list } = this.props;
     return (
       <div className={styles.main}>
-        <div className={styles.div1} tyle={{backgroundImage: `url(${banner_images})`}}>
-          <div className={styles.item1}>
-            {banner_title}
-          </div> 
-          <div className={styles.item2}>
-            直播已结束
-          </div> 
+        <div className={styles.div1} tyle={{ backgroundImage: `url(${banner_images})` }}>
+          <div className={styles.item1}>{banner_title}</div>
+          <div className={styles.item2}>直播已结束</div>
           <div className={styles.item3}>
             <div className={styles.bg1}>
               <img src={IntroImg} />
@@ -36,7 +27,7 @@ class SingerEnd extends Component {
               <img src={IntroImg} />
             </div>
           </div>
-        </div> 
+        </div>
         <LastList />
       </div>
     );

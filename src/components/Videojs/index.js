@@ -12,81 +12,85 @@ import './css/playerComponent.css';
 export default class VideoJsForReact extends Component {
   constructor(props) {
     super(props);
-    this.options = {}
+    this.options = {};
     this.sources = [];
     // 判断是否是多码流，来修改播放器的播放方式
     if (props.sources.length > 1) {
-      // 若存在多个流地址，则开启videoJsResolutionSwitcher 
-      this.sources = props.sources
+      // 若存在多个流地址，则开启videoJsResolutionSwitcher
+      this.sources = props.sources;
     } else {
-      this.options.source = props.sources
+      this.options.source = props.sources;
     }
   }
 
   componentDidMount() {
     videojs.getTech('html5').registerSourceHandler(HlsSourceHandler('html5'), 0);
-    let _this = this
-    this.player = videojs(this.videoContainer, {
-      ...this.props,
-      ...this.options,
-      plugins: {
-        videoJsResolutionSwitcher: {
-          default: 'low', // Default resolution [{Number}, 'low', 'high'],
-          dynamicLabel: true // Display dynamic labels or gear symbol
+    let _this = this;
+    this.player = videojs(
+      this.videoContainer,
+      {
+        ...this.props,
+        ...this.options,
+        plugins: {
+          videoJsResolutionSwitcher: {
+            default: 'low', // Default resolution [{Number}, 'low', 'high'],
+            dynamicLabel: true, // Display dynamic labels or gear symbol
+          },
+        },
+        // flash: {
+        //   swf: Swf,
+        // },
+      },
+      function() {
+        let player = this;
+        let props = _this.props;
+        let sources = _this.sources;
+
+        // 播放器加载成功的回调
+        if (!!props.onReady) {
+          props.onReady(props, player);
         }
-      }
-      // flash: {
-      //   swf: Swf,
-      // },
-    }, function () {
-      let player = this
-      let props = _this.props
-      let sources = _this.sources
 
-      // 播放器加载成功的回调
-      if (!!props.onReady) {
-        props.onReady(props,player)
-      }
+        // 修正使用多码流播放时自动播放失效的BUG
+        // if (!!props.autoplay) {
+        //   setInterval(() => {
+        //     player.play();
+        //   }, 100)
+        // }
 
-      // 修正使用多码流播放时自动播放失效的BUG
-      // if (!!props.autoplay) {
-      //   setInterval(() => {
-      //     player.play();
-      //   }, 100)
-      // }
-
-      // 判断是否是多码流，单码流调用video.js播放器播放，多码流使用插件播放
-      if (sources.length > 1) {
-        player.updateSrc([...sources])
-        player.on('resolutionchange', function () {
-          // 切换成功的回调
-          if (!!props.sourceChanged) {
-            props.sourceChanged(player)
+        // 判断是否是多码流，单码流调用video.js播放器播放，多码流使用插件播放
+        if (sources.length > 1) {
+          player.updateSrc([...sources]);
+          player.on('resolutionchange', function() {
+            // 切换成功的回调
+            if (!!props.sourceChanged) {
+              props.sourceChanged(player);
+            }
+          });
+        }
+        player.on('ended', function() {
+          if (!!props.onEnded) {
+            props.onEnded();
           }
-        })
+        });
       }
-      player.on("ended", function(){
-        if (!!props.onEnded) {
-          props.onEnded()
-        }
-      })
-    })
+    );
   }
 
-  componentDidUpdate(){
-    if(this.player) {
-      const {sources} = this.props;
+  componentDidUpdate() {
+    if (this.player) {
+      const { sources } = this.props;
       if (this.player.src() !== sources[0].src) {
-        // 若存在多个流地址，则开启videoJsResolutionSwitcher 
-        this.player.src(sources)
-      } 
+        // 若存在多个流地址，则开启videoJsResolutionSwitcher
+        this.player.src(sources);
+      }
     }
   }
 
   componentWillUnmount() {
     // 销毁播放器
     if (this.player) {
-      this.player.dispose()
+      this.player.dispose();
     }
   }
 
@@ -94,18 +98,17 @@ export default class VideoJsForReact extends Component {
     return (
       <div>
         <audio
-          style={{display:'none'}}
-          ref={node => this.videoContainer = node}
+          style={{ display: 'none' }}
+          ref={node => (this.videoContainer = node)}
           className="video-js"
-        ></audio>
+        />
       </div>
-    )
+    );
   }
 }
 
 VideoJsForReact.propTypes = {
-  sources: PropTypes.array.isRequired,  // 视频流地址列表 数组，必填
-  sourceChanged: PropTypes.func,   // 多码流时，对码流切换的回调
-  onReady: PropTypes.func   // 播放器加载成功时的回调
-}
-
+  sources: PropTypes.array.isRequired, // 视频流地址列表 数组，必填
+  sourceChanged: PropTypes.func, // 多码流时，对码流切换的回调
+  onReady: PropTypes.func, // 播放器加载成功时的回调
+};

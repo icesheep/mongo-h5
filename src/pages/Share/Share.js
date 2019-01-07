@@ -10,7 +10,7 @@ import mgLogo from '../../assets/mgdt_logo.png';
 import Play from '../../assets/play.png';
 import Pause from '../../assets/pause.png';
 
-@connect(({global }) => ({
+@connect(({ global }) => ({
   global,
 }))
 class Share extends Component {
@@ -21,22 +21,14 @@ class Share extends Component {
   };
 
   componentDidMount() {
+    const cid = this.props.location.query.cid;
     const { dispatch } = this.props;
     const params = {
-      "base" : {
-        "userid" : "1810232029531260",
-        "caller" : "18514281314",
-        "imei" : "db658275cf708690c350ec01b3f6e863db6627a4",
-        "ua" : "apple|iPhone|iPhone9,1|12.0.1|750*1334",
-        "version" : "2.1",
-        "osid" : "ios",
-        "apn" : "wifi",
-        "df" : "22010000"
+      base: {},
+      param: {
+        type: 2,
+        cid: cid,
       },
-      "param" : {
-        "type": 2,
-        "cid": "246105478579200"
-      }
     };
     dispatch({
       type: 'global/webview',
@@ -47,35 +39,37 @@ class Share extends Component {
   closeFix = () => {
     this.setState({
       showFix: false,
-    })
-  }
+    });
+  };
 
   downApp = () => {
-    window.open('https://fm.tingdao.com/html/h5.html')
-  }
+    window.open('https://fm.tingdao.com/html/h5.html');
+  };
 
-  playAudio = (v,index) => {
-    const cid=this.props.location.query.cid;
-    const type=parseInt(this.props.location.query.type);
+  playAudio = (v, index) => {
+    const cid = this.props.location.query.cid;
+    const type = parseInt(this.props.location.query.type) || 2;
     const urlParams = new URL(window.location.href);
-    window.location.href = `${urlParams.origin}${urlParams.pathname}#/activity/share-player?cid=${cid}&type=${type}&index=${index}`
-  }
+    window.location.href = `${urlParams.origin}${
+      urlParams.pathname
+    }#/activity/share-player?cid=${cid}&type=${type}&index=${index}`;
+  };
 
-  formatterNum = (num) => {
-    if(num < 10) {
-      num = `0${num}`
+  formatterNum = num => {
+    if (num < 10) {
+      num = `0${num}`;
     }
     return num;
-  }
+  };
 
   render() {
-    const {showFix,selectedAudio, playing} = this.state;
+    const { showFix, selectedAudio, playing } = this.state;
     const {
-      global: { list ={} },
+      global: { list = {} },
     } = this.props;
-    const {content=[], count, detail=[]} = list;
-    const detailDetail = detail&&detail.length>0?detail[0]:{};
-    console.log(this.props)
+    const { content = [], count, detail = [] } = list;
+    const detailDetail = detail && detail.length > 0 ? detail[0] : {};
+    console.log(this.props);
     return (
       <div className={styles.main}>
         <Row className={styles.div1}>
@@ -83,17 +77,25 @@ class Share extends Component {
           <Col className={styles.item1}>{detailDetail.title}</Col>
           <Col className={styles.item2}>
             {/* <span>{detailDetail.title}</span> */}
-            <span style={{marginLeft:'0.2333rem'}}><Icon type="customer-service" style={{marginRight: '0.2333rem'}} />{detailDetail.playCount}</span>
+            <span style={{ marginLeft: '0.2333rem' }}>
+              <Icon type="customer-service" style={{ marginRight: '0.2333rem' }} />
+              {detailDetail.playCount}
+            </span>
           </Col>
-          <Col className={styles.item3}>
-            所有节目
-          </Col>
-          {
-            content&&content.map((v,index) =>
+          <Col className={styles.item3}>所有节目</Col>
+          {content &&
+            content.map((v, index) => (
               <Col className={styles.item4}>
-                <Row className={selectedAudio === v ? styles.selected : styles.unselected} onClick={()=>{this.playAudio(v,index)}}>
-                  <Col span={4} className={styles.list1}>{this.formatterNum(index+1)}</Col>
-                  <Col span={20}className={styles.list2}>
+                <Row
+                  className={selectedAudio === v ? styles.selected : styles.unselected}
+                  onClick={() => {
+                    this.playAudio(v, index);
+                  }}
+                >
+                  <Col span={4} className={styles.list1}>
+                    {this.formatterNum(index + 1)}
+                  </Col>
+                  <Col span={20} className={styles.list2}>
                     <p className={styles.p1}>{v.title}</p>
                     <p className={styles.p2}>{v.publishName}</p>
                   </Col>
@@ -102,16 +104,23 @@ class Share extends Component {
                   </Col> */}
                 </Row>
               </Col>
-            )
-          }
+            ))}
         </Row>
-        {showFix ?
-        <Row className={styles.fix1}>
-          <Icon type="close" className={styles.close} onClick={this.closeFix}/>
-          <Col span={4}><img src={mgLogo} /></Col>
-          <Col span={14} className={styles.p1}>芒果动听APP 邀您一起加入<br/> 加油美好生活！</Col>
-          <Col span={6} className={styles.p2} onClick={this.downApp}>下载APP</Col>
-        </Row> : null}
+        {showFix ? (
+          <Row className={styles.fix1}>
+            <Icon type="close" className={styles.close} onClick={this.closeFix} />
+            <Col span={4}>
+              <img src={mgLogo} />
+            </Col>
+            <Col span={14} className={styles.p1}>
+              芒果动听APP 邀您一起加入
+              <br /> 加油美好生活！
+            </Col>
+            <Col span={6} className={styles.p2} onClick={this.downApp}>
+              下载APP
+            </Col>
+          </Row>
+        ) : null}
         {/* <VideoJsForReact
           sourceChanged={(player,players) => {console.log('准备完毕', player,players);this.setState({players})}}
           onReady={(player,players) => {console.log('准备完毕', player,players);this.setState({players})}}
@@ -120,10 +129,11 @@ class Share extends Component {
         <audio
           id="player"
           src={selectedAudio.playUrl}
-          style={{display:'none'}}
-          ref={node => this.videoContainer = node}
-          preload="none" controlsList="nodownload"
-        ></audio>
+          style={{ display: 'none' }}
+          ref={node => (this.videoContainer = node)}
+          preload="none"
+          controlsList="nodownload"
+        />
       </div>
     );
   }

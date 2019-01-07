@@ -1,4 +1,4 @@
-import { queryList , querySinger} from '@/services/api';
+import { queryList, querySinger } from '@/services/api';
 
 export default {
   namespace: 'global',
@@ -9,18 +9,18 @@ export default {
   },
 
   effects: {
-    *webview({payload}, { call, put }) {
-      const data = yield call(queryList,payload);
+    *webview({ payload }, { call, put }) {
+      const data = yield call(queryList, payload);
       yield put({
         type: 'saveList',
-        payload: data&&data.biz || {},
+        payload: (data && data.biz) || {},
       });
     },
-    *singer({payload}, { call, put }) {
-      const data = yield call(querySinger,payload);
+    *singer({ payload }, { call, put }) {
+      const data = yield call(querySinger, payload);
       yield put({
         type: 'saveSinger',
-        payload: data&&data.biz || {},
+        payload: (data && data.biz) || {},
       });
     },
   },
