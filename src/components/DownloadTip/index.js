@@ -6,7 +6,7 @@ import styles from './index.less';
 class DownloadTip extends Component {
   constructor(props) {
     super(props);
-    this.isApp = navigator.userAgent.includes('DongTing');
+    this.isApp = navigator.userAgent.includes('DongTing') || WebView_isDongTing();
     this.state = {
       showFix: true, //下载提示状态
     };
@@ -28,7 +28,7 @@ class DownloadTip extends Component {
     const { showFix } = this.state;
     return (
       <div>
-        {showFix ? (
+        {showFix&&!this.isApp ? (
           <Row className={styles.fix1}>
             <Icon type="close" className={styles.close} onClick={this.closeFix} />
             <Col span={4}>

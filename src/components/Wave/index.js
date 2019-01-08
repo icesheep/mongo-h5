@@ -29,7 +29,7 @@ class Wave extends Component {
           this.arr[Math.floor(i/this.devide)].height = this.arr[Math.floor(i/this.devide)].height + this.arr[Math.floor(i/this.devide)].speed;
         }else {
           let t = parseInt(Math.random() * this.canvas.offsetHeight);
-          let v = (0.2 + Math.random()).toFixed(2);
+          let v = (0.3 + Math.random()).toFixed(2);
           this.arr.push({height: t, speed: v});
         }
         if (this.arr[Math.floor(i/this.devide)].height + this.arr[Math.floor(i/this.devide)].speed > this.canvas.offsetHeight || 

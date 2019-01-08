@@ -1,0 +1,41 @@
+.music {
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .time {
+      width: 1.5rem;
+      padding: 0 0.1333rem;
+      text-align: center;
+    }
+    .progress {
+      flex: 1;
+      position: relative;
+      height: 2px;
+      background-color: gray;
+      // background-color: rgba(255,255,255,.1);
+      border-radius: 0.1333rem;
+      height: 0.0533rem;
+      cursor: pointer;
+      .playing {
+        background-color: red;
+        height: 100%;
+      }
+      .dot {
+        top: -4px;
+        right: -4px;
+        width: 10px;
+        height: 10px;
+        opacity: 1;
+        position: absolute;
+        border-radius: 10px;
+        background: red;
+        cursor: pointer;
+      }
+      .buffer {
+        background-color: rgba(255,255,255,.2);
+        height: 100%;
+      }
+    }
+  }
+}

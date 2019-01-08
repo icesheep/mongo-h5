@@ -11,9 +11,9 @@ export default [
       { path: '/activity/share-audio', component: './Share/VideoShare' }, //广播分享
       { path: '/activity/singer', component: './Live/Singer' }, 
       { path: '/zhifou', component: './ZhiFou/List' }, 
-      // { path: '/activity/singer-live', component: './Live/singer/Live' }, 
+      { path: '/zhifou/player', component: './ZhiFou/Player' }, 
       // { path: '/activity/singer-end', component: './Live/singer/End' }, 
-      // { path: '/activity/singer-list', component: './Live/singer/LastList' }, 
+      { path: '/activity/singer-list', component: './Live/singer/LastList' }, 
       // { path: '/activity/singer-prelive', component: './Live/singer/PreLive' }, 
     ],
   },
