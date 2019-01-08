@@ -1,0 +1,135 @@
+@import '~antd/lib/style/themes/default.less';
+
+/* stylelint-disable */
+.main {
+  width: 100%;
+  height: 100%;
+  padding:1px;
+  box-sizing:border-box;
+  z-index:1;
+  .main1 {
+    // width: 100%;
+    // height: 100%;
+    // position: absolute;
+    // z-index: -1;
+    // opacity: .8;
+    // filter: blur(7px);
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    -webkit-transform: scale(1.5);
+    transform: scale(1.5);
+    -webkit-transform-origin: center top;
+    transform-origin: center top;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+    -webkit-transition: opacity .3s linear;
+    transition: opacity .3s linear;
+    filter: blur(12px);
+  }
+  .main1:after {
+    content: " ";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background-color: rgba(0,0,0,.5);
+  }
+  .mengban {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -1;
+    opacity: .7;
+    background: gray;
+  }
+  .div1 {
+    // height: 7.7067rem;
+    .img1 {
+      width: 7.8933rem;
+      display: flex;
+      margin: 1.3333rem 1.0667rem 0.4rem;
+      border-radius: 0.2667rem;
+    }
+    .item1 {
+      height:0.7467rem;
+      font-size:0.5333rem;
+      font-weight:500;
+      color:rgba(255,255,255,1);
+      line-height:0.7467rem;
+      text-align: center;
+      margin-bottom: 0.7467rem;
+    }
+    .item2 {
+      margin-top: 0.8rem;
+      height:0.4rem;
+      font-size:0.2933rem;
+      font-weight:400;
+      color:white;
+      line-height:0.4rem;
+      text-align: center;
+      .all {
+        background-color: #D8D8D8;
+        border-radius: 0.1333rem;
+        height: 0.0533rem;
+        margin-top: 0.1333rem;
+      }
+      .playing {
+        background-color: red;
+        height: 100%;
+      }
+      .buffer {
+        background-color: gray;
+        height: 100%;
+        position: absolute;
+      }
+    }
+    .img2 {
+      width: 1.3333rem;
+      display: flex;
+      margin: 0.1333rem auto 0;
+    }
+  }
+  .fix1 {
+    position: fixed;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.5333rem 0 0.5667rem 0.5333rem;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    img {
+      height: 1.3333rem;
+    }
+    .close {
+      position: absolute;
+      top: 0.2rem;
+      right: 0.2rem;
+      color: #fff;
+    }
+    .p1 {
+      height:0.9867rem;
+      font-size:0.3467rem;
+      font-weight:500;
+      color:rgba(255,255,255,1);
+      line-height:0.4933rem;
+    }
+    .p2{
+      width:2rem;
+      height:0.8rem;
+      font-size:0.3467rem;
+      font-weight:500;
+      color:rgba(255,255,255,1);
+      line-height:0.8rem;
+      background: #EE023A;
+      border-radius: 0.8rem; 
+      text-align: center; 
+    }
+  }
+}

@@ -10,10 +10,11 @@ export default [
       { path: '/activity/share-player', component: './Share/PlayShare' }, //播放器分享
       { path: '/activity/share-audio', component: './Share/VideoShare' }, //广播分享
       { path: '/activity/singer', component: './Live/Singer' }, 
-      { path: '/activity/singer-live', component: './Live/singer/Live' }, 
-      { path: '/activity/singer-end', component: './Live/singer/End' }, 
-      { path: '/activity/singer-list', component: './Live/singer/LastList' }, 
-      { path: '/activity/singer-prelive', component: './Live/singer/PreLive' }, 
+      { path: '/zhifou', component: './ZhiFou/List' }, 
+      // { path: '/activity/singer-live', component: './Live/singer/Live' }, 
+      // { path: '/activity/singer-end', component: './Live/singer/End' }, 
+      // { path: '/activity/singer-list', component: './Live/singer/LastList' }, 
+      // { path: '/activity/singer-prelive', component: './Live/singer/PreLive' }, 
     ],
   },
 ];

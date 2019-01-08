@@ -1,0 +1,130 @@
+@import '~antd/lib/style/themes/default.less';
+
+.main {
+  width: 100%;
+  z-index:1;
+  .main1 {
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    -webkit-transform: scale(1.5);
+    transform: scale(1.5);
+    -webkit-transform-origin: center top;
+    transform-origin: center top;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+    -webkit-transition: opacity .3s linear;
+    transition: opacity .3s linear;
+    filter: blur(12px);
+  }
+  .main1:after {
+    content: " ";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background-color: rgba(0,0,0,.5);
+  }
+  .div1 {
+    // height: 7.7067rem;
+    .img1 {
+      width: 3.2rem;
+      height: 3.2rem;
+      display: flex;
+      margin: 0.2667rem auto;
+      border-radius: 0.13333rem;
+    }
+    .item1 {
+      font-size:0.5333rem;
+      font-weight:500;
+      line-height:0.7467rem;
+      color:rgba(0,0,0,1);
+      text-align: center;
+    }
+    .item2 {
+      margin-top: 0.12rem;
+      height:0.4rem;
+      font-size:0.2933rem;
+      font-weight:400;
+      color:rgba(102,102,102,1);
+      line-height:0.4rem;
+      text-align: center;
+    }
+    .item3 {
+      margin-top: 0.6667rem;
+      background: #F2F2F2;
+      padding-left: 0.5333rem;
+      display: flex;
+      align-items: center;
+      height:0.8rem;
+      font-size:0.3467rem;
+      font-weight:400;
+      color:rgba(102,102,102,1);
+      line-height:0.4933rem;
+    }
+    .item4 {
+      padding: 0.56rem 0 0.56rem 0;
+      .list1 {
+        padding-left: 0.5333rem;
+        padding-top: 0.18rem;
+        height:0.64rem;
+        font-size:0.4533rem;
+        font-weight:600;
+        color:rgba(0,0,0,1);
+        line-height:0.64rem;
+      }
+      .list2 {
+        .p1 {
+          height:0.56rem;
+          font-size:0.4rem;
+          font-weight:400;
+          color:rgba(0,0,0,1);
+          line-height:0.56rem;
+          margin-bottom: 0.08rem;
+          overflow: hidden;
+        }
+        .p2 {
+          height:0.4rem;
+          font-size:0.2933rem;
+          font-weight:400;
+          color:rgba(102,102,102,1);
+          line-height:0.4rem;
+          margin-bottom: 0;
+        }
+      }
+      .list3{
+        height:0.96rem;
+        img {
+          height: 100%;
+        }
+      }
+      .unselected {
+        .list1 {
+          color:rgba(0,0,0,1);
+        }
+        .list2 {
+          .p1 {
+            color:rgba(0,0,0,1);
+          }
+        }
+      }
+      .selected {
+        border-left: 2px solid red;
+        .list1 {
+          color:#EB032A;
+        }
+        .list2 {
+          .p1 {
+            color:#EB032A;
+          }
+        }
+      }
+    }
+  }
+}

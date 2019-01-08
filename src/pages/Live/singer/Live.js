@@ -131,8 +131,8 @@ class SingerLive extends Component {
 
   render() {
     const { playing, videoJsOptions } = this.state;
+    console.log(this.state,this.props,this.isApp,this.appPlaying)
     const {
-      begin_time,
       end_time,
       banner_images,
       banner_playurl,
@@ -141,7 +141,9 @@ class SingerLive extends Component {
       msg,
       desc,
     } = this.props;
-    videoJsOptions.sources[0].src = banner_playurl;
+    if(videoJsOptions.sources[0].src === '') {
+      videoJsOptions.sources[0].src = banner_playurl;
+    }
     return (
       <div className={styles.main}>
         <div

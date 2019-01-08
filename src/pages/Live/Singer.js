@@ -99,13 +99,14 @@ class Singer extends Component {
             />
           )
         ) : (
+          type ? 
           <PreLive
             banner_images={banner_images}
             banner_playurl={banner_playurl}
             banner_title={banner_title}
             data_list={data_list}
             desc={desc}
-          />
+          /> : null
         )}
       </div>
     );
