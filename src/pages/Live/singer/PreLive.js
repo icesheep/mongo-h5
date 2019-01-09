@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styles from './PreLive.less';
 
 import IntroImg from '../../../assets/singer/intro.png';
+import bg1 from '../../../assets/singer/bg1.png';
 
 class PreLive extends Component {
   constructor(props) {
@@ -18,13 +19,16 @@ class PreLive extends Component {
     const { banner_images, banner_playurl, banner_title, data_list = [], desc } = this.props;
     return (
       <div className={styles.main}>
+        <img className={styles.imgBg} src={banner_images||bg1} />  
+        <div className={styles.mask} />
         <div
           className={styles.div1}
-          style={{ backgroundImage: banner_images && `url(${banner_images})` }}
+          // style={{ backgroundImage: banner_images && `url(${banner_images})` }}
         >
           <div className={styles.item1}>{banner_title}</div>
           <div className={styles.item3}>
             <div className={styles.bg1}>
+              
               <div className={styles.item3_1}>
                 <div>敬请关注</div>
                 <div>

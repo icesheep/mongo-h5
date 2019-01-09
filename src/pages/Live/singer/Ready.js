@@ -7,6 +7,7 @@ import music3 from '../../../assets/3.mp3';
 import IntroImg from '../../../assets/singer/intro.png';
 import PlayImg from '../../../assets/singer/play.png';
 import PauseImg from '../../../assets/singer/pause.png';
+import bg1 from '../../../assets/singer/bg1.png';
 
 class Ready extends Component {
   constructor(props) {
@@ -150,7 +151,9 @@ class Ready extends Component {
     // console.log(this.props)
     return (
       <div className={styles.main}>
-        <div className={styles.div1} style={{ backgroundImage: `url(${banner_images})` }}>
+        <img className={styles.imgBg} src={banner_images||bg1} />  
+        <div className={styles.mask} />
+        <div className={styles.div1}>
           <div className={styles.item1}>{banner_title}</div>
           <div className={styles.item2}>即将呈现</div>
           <div className={styles.item3}>

@@ -3,11 +3,36 @@
   min-height: 100%;
   color: white;
   background: #171A26;
+  .imgBg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    height: 10.2133rem;
+    width: 100%;
+    z-index: 1;
+  }
+  .mask {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    height: 10.2133rem;
+    width: 100%;
+    background: rgba(9,9,9,.4);
+    filter:blur(1px);
+    z-index: 1;
+  }
   .div1 {
-    height: 8.96rem;
-    padding-top: 3.6267rem;
-    background-image: url("../../../assets/singer/bg1.png");
-    background-size: 100% 100%;
+    z-index: 2;
+    position: relative;
+    height: 10.2133rem;
+    padding-top: 5.9733rem;
+    margin-bottom: 1.28rem;
+    // background-image: url("../../../assets/singer/bg1.png");
+    // background-size: 100% 100%;
     .item1 {
       padding-left: 0.9333rem;
       height: 1.04rem;
@@ -23,9 +48,10 @@
       line-height:1.04rem;
     }
     .item3 {
+      margin-top: 0.48rem;
       .bg1 {
         width: 9.68rem;
-        height: 2.9333rem;
+        height: 2.3733rem;
         margin-top: 0.1067rem;
         margin-left: 0.16rem;
         background-image: url("../../../assets/singer/rec1.png");

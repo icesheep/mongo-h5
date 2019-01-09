@@ -5,6 +5,7 @@ import VideoJsForReact from '@/components/Videojs';
 import styles from './Live.less';
 
 import IntroImg from '../../../assets/singer/intro.png';
+import bg1 from '../../../assets/singer/bg1.png';
 import PlayImg from '../../../assets/singer/play.png';
 import PauseImg from '../../../assets/singer/pause.png';
 
@@ -14,12 +15,13 @@ class SingerLive extends Component {
     this.isApp = navigator.userAgent.includes('DongTing') || WebView_isDongTing();
     this.appPlaying = false;
     this.state = {
+      showIcon: true,
       players: null, //直播播放控件
       playing: false, //播放状态
       videoJsOptions: {
         preload: 'auto', // 预加载
         bigPlayButton: {}, // 大按钮
-        autoplay: true, // 自动播放
+        autoplay: false, // 自动播放
         controls: false, // 是否开启控制栏
         width: 0, // 播放器宽度
         height: 0, // 播放器高度
@@ -27,8 +29,8 @@ class SingerLive extends Component {
         sources: [
           // 视频源
           {
-            // src: 'http://mgtj-live.oss-cn-shanghai.aliyuncs.com/h2/index.m3u8',
-            src: '', //音频地址
+            src: 'http://mgtj-live.oss-cn-shanghai.aliyuncs.com/h2/index.m3u8',
+            // src: '', //音频地址
             type: 'application/x-mpegURL', //音频类型m3u8：application/x-mpegURL，mp3、mp4：video/mp4
             label: 'HLS1',
             withCredentials: false,
@@ -73,7 +75,7 @@ class SingerLive extends Component {
         {
           playing: true,
         },
-        this.appFirstPlay
+        ()=>{this.appFirstPlay();setTimeout(()=>{this.hideIcon(true)},3000) }
       );
     } else {
       if(playing) {
@@ -83,6 +85,7 @@ class SingerLive extends Component {
           },
           () => {
             WebView_pauseOrResumeVideo(false);
+            setTimeout(()=>{this.hideIcon(false)},0)
           }
         );
       }else {
@@ -92,6 +95,7 @@ class SingerLive extends Component {
           },
           () => {
             WebView_pauseOrResumeVideo(true);
+            setTimeout(()=>{this.hideIcon(true)},3000)
           }
         );
       }
@@ -101,7 +105,7 @@ class SingerLive extends Component {
   // 直播播放、暂停功能
   play = () => {
     const { players, playing } = this.state;
-    if(players.played) players.pause();
+    // if(players.played) players.pause();
     if (this.isApp) {
       this.playInApp();
     } else {
@@ -111,7 +115,8 @@ class SingerLive extends Component {
             playing: false,
           },
           () => {
-            players.pause();
+            players&&players.pause();
+            setTimeout(()=>{this.hideIcon(false)},0)
           }
         );
       } else {
@@ -120,17 +125,22 @@ class SingerLive extends Component {
             playing: true,
           },
           () => {
-            // setTimeout(() => {
-              players.play();
-            // }, 10);
+            setTimeout(() => {
+              players&&players.play();
+            }, 1000);
+            setTimeout(()=>{this.hideIcon(true)},3000)
           }
         );
       }
     }
   };
 
+  hideIcon = (flag) => {
+    this.setState({showIcon: !flag})
+  }
+
   render() {
-    const { playing, videoJsOptions } = this.state;
+    const { showIcon, playing, videoJsOptions } = this.state;
     // console.log(this.state,this.props,this.isApp,this.appPlaying)
     const {
       end_time,
@@ -143,7 +153,7 @@ class SingerLive extends Component {
     } = this.props;
     if(videoJsOptions.sources[0].src === '') {
       videoJsOptions.sources[0].src = banner_playurl;
-      if(videoJsOptions.sources[0].src.includes('m3u8')) {
+      if(banner_playurl&&videoJsOptions.sources[0].src.includes('m3u8')) {
         videoJsOptions.sources[0].type= 'application/x-mpegURL'
       }else {
         videoJsOptions.sources[0].type= 'video/mp4'
@@ -151,15 +161,16 @@ class SingerLive extends Component {
     }
     return (
       <div className={styles.main}>
+        <img className={styles.imgBg} src={banner_images||bg1} />   
         <div
           className={styles.mask}
-          style={{ background: playing ? 'rgba(0,0,0,.6)' : 'rgba(0,0,0,.4)' }}
+          style={{ background: playing ? 'rgba(9,9,9,.5)' : 'rgba(9,9,9,.4)' }}
         />
         <div
           className={styles.div1}
-          style={{ backgroundImage: banner_images && `url(${banner_images})` }}
+          onClick={this.play}
         >
-          <img className={styles.img1} onClick={this.play} src={playing ? PauseImg : PlayImg} />
+          <img style={{display: showIcon ? 'block' : 'none'}} className={styles.img1} src={playing ? PauseImg : PlayImg} />
           <div className={styles.item1}>{banner_title}</div>
           <div className={styles.item2}>{msg}</div>
           <div className={styles.img2} style={{ display: playing ? '' : 'none' }}>

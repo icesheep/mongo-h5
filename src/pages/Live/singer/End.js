@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import LastList from './LastList';
 import styles from './End.less';
 import IntroImg from '../../../assets/singer/intro.png';
+import bg1 from '../../../assets/singer/bg1.png';
 
 class SingerEnd extends Component {
   constructor(props) {
@@ -17,7 +18,9 @@ class SingerEnd extends Component {
     const { banner_images, banner_playurl, banner_title, data_list } = this.props;
     return (
       <div className={styles.main}>
-        <div className={styles.div1} tyle={{ backgroundImage: `url(${banner_images})` }}>
+        <img className={styles.imgBg} src={banner_images||bg1} />  
+        <div className={styles.mask} />
+        <div className={styles.div1}>
           <div className={styles.item1}>{banner_title}</div>
           <div className={styles.item2}>直播已结束</div>
           <div className={styles.item3}>

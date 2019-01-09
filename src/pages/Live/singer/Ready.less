@@ -3,17 +3,42 @@
   min-height: 100%;
   color: white;
   background: #171A26;
+  .imgBg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    height: 10.2133rem;
+    width: 100%;
+    z-index: 1;
+  }
+  .mask {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    height: 10.2133rem;
+    width: 100%;
+    background: rgba(9,9,9,.4);
+    filter:blur(1px);
+    z-index: 1;
+  }
   .div1 {
-    height: 8.96rem;
-    padding-top: 3.6267rem;
-    background-image: url("../../../assets/singer/bg1.png");
-    background-size: 100% 100%;
+    z-index: 2;
+    position: relative;
+    height: 10.2133rem;
+    padding-top: 5.9733rem;
+    // background-image: url("../../../assets/singer/bg1.png");
+    // background-size: 100% 100%;
     .item1 {
       padding-left: 0.9333rem;
       height: 1.04rem;
       font-size: 0.5867rem;
       font-weight:600;
       line-height:1.04rem;
+      z-index: 2;
     }
     .item2 {
       padding-left: 0.9333rem;
@@ -21,8 +46,10 @@
       font-size:0.4267rem;
       font-weight:600;
       line-height:1.04rem;
+      z-index: 2;
     }
     .item3 {
+      z-index: 2;
       .bg1 {
         width: 9.68rem;
         height: 3.1467rem;
@@ -67,6 +94,7 @@
   .div2 {
     padding-left: 0.56rem;
     padding-bottom: 0.5rem;
+    margin-top: 1.3067rem;
     .item4 {
       display: flex;
       align-items: center;
