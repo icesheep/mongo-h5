@@ -4,14 +4,28 @@ import styles from './index.less';
 
 export default class Page1 extends Component {
 
-  state = {
-    playingtime: 0,   //播放时间 
-    buffertime: 0,   //缓冲时间
-    duration: 0,   //总时长
-    playing: false,   //播放状态
-    showFix: false,   //下载提示状态
-    playIndex: 0,   //当前播放曲目index
-  };
+  constructor(props) {
+    super(props)
+    this.state = { 
+      playingtime: 0,   //播放时间 
+      buffertime: 0,   //缓冲时间
+      duration: 0,   //总时长
+      playing: false,
+    };
+  }
+
+  componentDidMount() {
+
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.src !== prevProps.src) {
+      setTimeout(() => {
+        this.videoContainer.play();
+        this.PlayingMusic();
+      },1000)
+    }
+  }
 
   componentWillUnmount() {
     clearTimeout(this.timer);
@@ -28,30 +42,16 @@ export default class Page1 extends Component {
           if(timeRages.length !== 0){
               bufferedTime = timeRages.end(timeRages.length-1);
           }
-          if(this.videoContainer.currentTime === this.videoContainer.duration) {
-            this.setState(
-              {
-                playingtime: this.videoContainer.currentTime,
-                duration: this.videoContainer.duration,
-                buffertime: bufferedTime,
-              },
-              () => {
-                this.videoContainer.play();
-                this.PlayingMusic();
-              }
-            );
-          }else {
-            this.setState(
-              {
-                playingtime: this.videoContainer.currentTime,
-                duration: this.videoContainer.duration,
-                buffertime: bufferedTime,
-              },
-              () => {
-                this.PlayingMusic();
-              }
-            );
-          }
+          this.setState(
+            {
+              playingtime: this.videoContainer.currentTime,
+              duration: this.videoContainer.duration,
+              buffertime: bufferedTime,
+            },
+            () => {
+              this.PlayingMusic();
+            }
+          );
         }
       }, 1000);
     });
@@ -69,7 +69,7 @@ export default class Page1 extends Component {
 
   // 播放、暂停功能
   playAudio = () => {
-    const {playing,playIndex} = this.state;
+    const {playing} = this.state;
     if(playing) {
       this.setState({
         playing: false,
@@ -80,7 +80,6 @@ export default class Page1 extends Component {
       })
     }else {
       this.setState({
-        playIndex : playIndex===-1 ? 0 : playIndex,
         playing: true,
       }, ()=>{
         this.videoContainer.play();
@@ -91,10 +90,6 @@ export default class Page1 extends Component {
 
   // 停止播放
   stopPlay = () => {
-    this.setState({
-      playIndex: -1,
-      playing: false,
-    })
     this.videoContainer.pause();
   }
   //设置进度条
@@ -130,11 +125,13 @@ export default class Page1 extends Component {
     if(!point.pageX&& !duration){
         return
     }
-    this.setState(
-      {
-        playingtime: (point.pageX-this.progressDiv.offsetLeft)/(this.progressDiv.clientWidth)*duration,
-      }
-    );
+    if(point.pageX-this.progressDiv.offsetLeft <= this.progressDiv.clientWidth) {
+      this.setState(
+        {
+          playingtime: (point.pageX-this.progressDiv.offsetLeft)/(this.progressDiv.clientWidth)*duration,
+        }
+      );
+    }
     // this.setTimeOnPc()
   }
 
@@ -144,6 +141,7 @@ export default class Page1 extends Component {
     if(audio.currentTime !== 0 && playingtime <= audio.duration) {
         audio.currentTime = playingtime;
     }
+    this.videoContainer.play();
     this.PlayingMusic();
   }
   //默认以第一个手指的位置计算
@@ -181,11 +179,11 @@ export default class Page1 extends Component {
         </div>
         <audio
           id="player"
-          src={Music}
+          src={this.props.src}
           style={{display:'none'}}
           ref={node => this.videoContainer = node}
           preload="none" controlsList="nodownload"
-          onEnded={this.stopPlay}
+          onEnded={this.props.next}
         ></audio>
       </div>;
   }

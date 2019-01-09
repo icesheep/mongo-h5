@@ -1,4 +1,4 @@
-import { queryList, querySinger } from '@/services/api';
+import { queryList, querySinger, queryZhifou } from '@/services/api';
 
 export default {
   namespace: 'global',
@@ -6,22 +6,33 @@ export default {
   state: {
     list: {},
     singerInfo: {},
+    queryZhifou: {},
   },
 
   effects: {
-    *webview({ payload }, { call, put }) {
+    *webview({ payload, callback }, { call, put }) {
       const data = yield call(queryList, payload);
       yield put({
         type: 'saveList',
         payload: (data && data.biz) || {},
       });
+      if(callback) callback();
     },
-    *singer({ payload }, { call, put }) {
+    *singer({ payload, callback }, { call, put }) {
       const data = yield call(querySinger, payload);
       yield put({
         type: 'saveSinger',
         payload: (data && data.biz) || {},
       });
+      if(callback) callback();
+    },
+    *zhifou({ payload, callback }, { call, put }) {
+      const data = yield call(queryZhifou, payload);
+      yield put({
+        type: 'saveZhifou',
+        payload: (data && data.biz) || {},
+      });
+      if(callback) callback();
     },
   },
 
@@ -36,6 +47,12 @@ export default {
       return {
         ...state,
         singerInfo: payload,
+      };
+    },
+    saveZhifou(state, { payload }) {
+      return {
+        ...state,
+        queryZhifou: payload,
       };
     },
   },

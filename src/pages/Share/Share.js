@@ -5,7 +5,7 @@ import { stringify } from 'qs';
 import request from '@/utils/request';
 import VideoJsForReact from '@/components/Videojs';
 import styles from './Share.less';
-import Jay from '../../assets/jay.jpg';
+import Jay from '../../assets/bg-play.png';
 import mgLogo from '../../assets/mgdt_logo.png';
 import Play from '../../assets/play.png';
 import Pause from '../../assets/pause.png';

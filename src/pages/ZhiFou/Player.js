@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Row, Col, Icon } from 'antd';
 import DownloadTip from '@/components/DownloadTip';
 import styles from './Player.less';
-import Jay from '../../assets/jay.jpg';
+import Jay from '../../assets/bg-play.png';
 import PlayGray from '../../assets/play-gray.png';
 import PauseGray from '../../assets/pause-gray.png';
 import mm from '../../assets/3.mp3';
@@ -41,10 +41,33 @@ class PlayShare extends Component {
     dispatch({
       type: 'global/webview',
       payload: params,
+      callback: this.play,
     });
   }
 
   componentWillUnmount() {
+  }
+
+  play = () => {
+    const {playing, playIndex} = this.state;
+    console.log(this.audio,playing,'playing!!!!!!!!!!!!!')
+    if(playing) {
+      this.setState({
+        playing: false,
+      },this.audio&&this.audio.playAudio())
+    }else {
+      this.setState({
+        playing: true
+      },this.audio&&this.audio.playAudio())
+    }
+  }
+
+  next = () => {
+    const {playing, playIndex} = this.state;
+    console.log(this.audio,playing,'next!!!!!!!!!!!!!')
+    this.setState({
+      playIndex: playIndex === 2 ? playIndex : playIndex+1,
+    },this.audio&&this.audio.playAudio())
   }
 
   render() {
@@ -54,15 +77,18 @@ class PlayShare extends Component {
     } = this.props;
     const { content = [] } = list;
     let detail = {};
-    // if (content.length >= playIndex || content.length === 0) {
-    //   detail = content[playIndex];
-    // } else if (playIndex !== 0) {
-    //   this.stopPlay();
-    // }
+    if (content.length > playIndex) {
+      console.log(detail)
+      detail = content[playIndex];
+    } else if (playIndex !== 0) {
+      this.play();
+    }
+    console.log(detail,this.state,this.props)
+
     return (
       <div className={styles.main}>
         <div
-          style={{ backgroundImage:`url("${Jay}")` }}
+          style={{ backgroundImage:`url("${detail.imgUrl || Jay}")` }}
           className={styles.main1}
         >
           {' '}
@@ -75,12 +101,16 @@ class PlayShare extends Component {
           </Col>
           <img
             // onClick={this.playAudio}
-            onClick={()=>{this.audio.playAudio()}}
+            onClick={this.play}
             src={playing ? PauseGray : PlayGray}
             className={styles.img2}
           />
           <Col className={styles.item2}>
-            <Audio ref = {e => {this.audio = e}} />
+            <Audio 
+              play = {this.play}
+              next = {this.next}
+              src={detail.playUrl}  
+              ref = {e => {this.audio = e}} />
           </Col>
         </Row>
         <DownloadTip />

@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Row, Col, Icon, Affix, Modal } from 'antd';
 import VideoJsForReact from '@/components/Videojs';
 import styles from './VideoShare.less';
-import Jay from '../../assets/jay.jpg';
+import Jay from '../../assets/bg-play.png';
 import PlayGray from '../../assets/play-gray.png';
 import mgLogo from '../../assets/mgdt_logo.png';
 import PauseGray from '../../assets/pause-gray.png';

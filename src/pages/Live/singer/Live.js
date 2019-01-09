@@ -75,7 +75,7 @@ class SingerLive extends Component {
         {
           playing: true,
         },
-        ()=>{this.appFirstPlay();setTimeout(()=>{this.hideIcon(true)},3000) }
+        ()=>{this.appFirstPlay();setTimeout(()=>{this.hideIcon(true)},0) }
       );
     } else {
       if(playing) {
@@ -95,7 +95,7 @@ class SingerLive extends Component {
           },
           () => {
             WebView_pauseOrResumeVideo(true);
-            setTimeout(()=>{this.hideIcon(true)},3000)
+            setTimeout(()=>{this.hideIcon(true)},0)
           }
         );
       }
@@ -103,7 +103,7 @@ class SingerLive extends Component {
   };
 
   // 直播播放、暂停功能
-  play = () => {
+  play = (lag) => {
     const { players, playing } = this.state;
     // if(players.played) players.pause();
     if (this.isApp) {
@@ -125,10 +125,14 @@ class SingerLive extends Component {
             playing: true,
           },
           () => {
-            setTimeout(() => {
+            if(lag) {
+              setTimeout(() => {
+                players&&players.play();
+              }, 1000);
+            }else {
               players&&players.play();
-            }, 1000);
-            setTimeout(()=>{this.hideIcon(true)},3000)
+            }
+            setTimeout(()=>{this.hideIcon(true)},0)
           }
         );
       }
@@ -196,10 +200,10 @@ class SingerLive extends Component {
         {/* 直播音频播放控件 */}
         <VideoJsForReact
           sourceChanged={(player, players) => {
-            this.setState({ players }, this.play);
+            this.setState({ players }, ()=>{this.play(true)});
           }}
           onReady={(player, players) => {
-            this.setState({ players }, this.play);
+            this.setState({ players }, ()=>{this.play(true)});
           }}
           {...videoJsOptions}
         />

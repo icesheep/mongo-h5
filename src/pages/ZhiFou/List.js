@@ -6,7 +6,7 @@ import request from '@/utils/request';
 import DownloadTip from '@/components/DownloadTip';
 import LoginTip from '@/components/LoginTip';
 import styles from './List.less';
-import Jay from '../../assets/jay.jpg';
+import Jay from '../../assets/bg-play.png';
 import Rec from '../../assets/singer/rec3.png';
 import Jieshao from '../../assets/singer/jieshao.png';
 
@@ -20,17 +20,50 @@ class Share extends Component {
     this.isLogin = navigator.userAgent.includes('DongTing') || WebView_isDongTing();
     this.state = {
       visible: false,
+      nowTheme: {},
     };
   }
 
   componentDidMount() {
-    const cid = this.props.location.query.cid;
+    this.getData();
+  }
+
+  getData = () => {
+    const { dispatch } = this.props;
+    const params = {
+      "base": {
+        "userid": "1810232029531260",
+        "caller": "18514281314",
+        "imei": "db658275cf708690c350ec01b3f6e863db6627a4",
+        "ua": "apple|iPhone|iPhone9,1|12.0.1|750*1334",
+        "version": "2.1",
+        "osid": "ios",
+        "apn": "wifi",
+        "df": "22010000"
+      }, 
+      "param": {},
+    };
+    dispatch({
+      type: 'global/zhifou',
+      payload: params,
+      callback: () => {
+        const {global: {queryZhifou}} = this.props;
+        const {data_list = []} = queryZhifou;
+        if(data_list.length > 0) {
+          this.setState({nowTheme: data_list[0]});
+          this.getList(data_list[0]);
+        }
+      }
+    });
+  };
+
+  getList = (v) => {
     const { dispatch } = this.props;
     const params = {
       base: {},
       param: {
-        type: 2,
-        cid: cid,
+        type: v.type,
+        cid: v.themeid,
       },
     };
     dispatch({
@@ -57,59 +90,81 @@ class Share extends Component {
         });
       }
     }else {
-      const cid = this.props.location.query.cid;
-      const type = parseInt(this.props.location.query.type) || 2;
+      const {nowTheme} = this.state;
+      const cid = nowTheme.themeid;
+      const type = parseInt(nowTheme.type);
       const urlParams = new URL(window.location.href);
-      window.location.href = `${urlParams.origin}${
-        urlParams.pathname
-      }#/zhifou/player?cid=${cid}&type=${type}&index=${index}`;
+      if(type && cid) {
+        window.location.href = `${urlParams.origin}${
+          urlParams.pathname
+        }#/zhifou/player?cid=${cid}&type=${type}&index=${index}`;
+      }
     }
   }
 
+  showTheme = (nowTheme) => {
+    this.setState({nowTheme},this.getList(nowTheme))
+  }
+
+  // 格式化时间
+  formatterTime = (time) => {
+    let hours = Math.floor(Math.round(time) / 3600);
+    let minutes = Math.floor(Math.round(time) % 3600 / 60);
+    let seconds = Math.floor(Math.round(time) % 60);
+    minutes = minutes.toString().padStart(2,'0').substr('-2');
+    seconds = seconds.toString().padStart(2,'0').substr('-2');
+    return hours ? `${hours}:${minutes}:${seconds}` : `${minutes}:${seconds}`;
+  }
+
   render() {
-    const { visible } = this.state;
+    const { visible, nowTheme } = this.state;
+    console.log(this.props)
     const {
-      global: { list = {} },
+      global: { list = {}, queryZhifou = {} },
     } = this.props;
+    const {data_list = []} = queryZhifou;
+    const { content = [], count, detail = [] } = list;
+    const detailDetail = detail && detail.length > 0 ? detail[0] : {};
+    console.log(this.state,this.props)
     return (
       <div className={styles.main}>
         <div style={{ backgroundImage: `url("${Jay}")` }} className={styles.main1}>
           {' '}
         </div>
         <div className={styles.div1}>
-          <img src={Jay} className={styles.img1} />
+          <img src={detailDetail.imgUrl || Jay} className={styles.img1} />
           <div className={styles.item1}>
-            <div className={styles.p1}>知否？知否？应是绿肥红瘦</div>
-            <div className={styles.p2}>配音：花亦如玉、子慕、辰羽</div>
-            <div className={styles.p3} onClick={()=>{this.showIntro(true)}}>{'简介：赵丽颖、冯绍峰联袂主演同名电视剧原著小说。关心则乱，经典宅斗种田小说。 由晋江文学城授权、飞科聚力出品、鼎鼎有声制作；华衣如雨、子慕、辰羽、五一先生等众多主播携手演播多人有声剧震撼上线！'.substring(0,28)+'...'}
+            <div className={styles.p1}>{detailDetail.title}</div>
+            <div className={styles.p2}>{detailDetail.subhead&&detailDetail.subhead.length>14 ? `${detailDetail.subhead.substring(0,14)}...` : detailDetail.subhead}</div>
+            <div className={styles.p3} onClick={()=>{this.showIntro(true)}}>{detailDetail.summary&&detailDetail.summary.length>28 ? `${detailDetail.summary.substring(0,28)}...` : detailDetail.summary}
             <Icon type="right" style={{ }} />
             </div>
           </div>
         </div>
         <div className={styles.div2}>
           <div className={styles.item3}>
-            {[1,2,3,4,5].map(v=>
-            <div className={styles.title}><div style={{fontWeight: v===1 ? '600' : null}} className={styles.name}>分栏分期</div>
-            <div className={v === 1 ? styles.border : ''}></div>
+            {data_list.length>0&&data_list.map(v=>
+            <div onClick={()=>{this.showTheme(v)}} className={styles.title}><div style={{fontWeight: v.id===nowTheme.id ? '600' : null}} className={styles.name}>{v.title}</div>
+            <div className={v.id===nowTheme.id ? styles.border : ''}></div>
             </div>)}
           </div>
           <div className={styles.play}>
             <Icon onClick={this.play} type="play-circle" style={{fontSize:'0.64rem', marginRight: '0.2333rem' }} />
             <div className={styles.all}>全部播放</div>
-            <Icon type="menu-fold" style={{fontSize:'0.64rem' }} />
+            <Icon type="menu-fold" style={{fontSize:'0.64rem', display: 'none' }} />
           </div>
-          {[1] &&
-            [1,2,3,4,5,6,7].map((v, index) => (
+          {content.length > 0 &&
+            content.map((v, index) => (
               <div onClick={()=>{if(index < 3){this.play(index)}}} className={index >= 3 && !this.isLogin ? styles.item40 : styles.item4}>
                 <div className={styles.index}>{index+1}</div>
                 <div className={styles.detail}>
-                  <div className={styles.name}>第1集 上：郑秋冬在工厂车间慷慨演</div>
+                  <div className={styles.name}>{v.title}</div>
                   <div className={styles.mark}>
-                    <div className={styles.time}>2019-01-03</div>
+                    <div className={styles.time}>{v.broadcastTime}</div>
                     <Icon type="clock-circle" style={{fontSize:'0.2933rem', marginLeft: '0.4533rem' }} />
-                    <div className={styles.duration}>21:20</div>
+                    <div className={styles.duration}>{this.formatterTime(v.duration)}</div>
                     <Icon type="customer-service" style={{fontSize:'0.2933rem', marginLeft: '0.3467rem' }} />
-                    <div className={styles.count}>6260</div>
+                    <div className={styles.count}>{v.playCount}</div>
                   </div>
                 </div>
               </div>
@@ -118,11 +173,11 @@ class Share extends Component {
         {!this.isApp ? <DownloadTip /> : null}
         {this.isApp && !this.isLogin ? <LoginTip /> : null}
         {visible ? <div style={{ backgroundImage: `url("${Rec}")` }} className={styles.tanchuang}>
-          <div className={styles.title}>知否？知否？应是绿肥红瘦</div>
+          <div className={styles.title}>{detailDetail.title}</div>
           <div className={styles.content}>
               <img src={Jieshao} />
               <div className={styles.detail}>
-              赵丽颖、冯绍峰联袂主演同名电视剧原著小说。关心则乱，经典宅斗种田小说。 由晋江文学城授权、飞科聚力出品、鼎鼎有声制作；华衣如雨、子慕、辰羽、五一先生等众多主播携手演播多人有声剧震撼上线！
+              {detailDetail.summary}
               </div>
           </div>
           <div onClick={()=>{this.showIntro(false)}} className={styles.close}>

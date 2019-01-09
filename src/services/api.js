@@ -13,3 +13,9 @@ export async function querySinger(params) {
     body: params,
   });
 }
+export async function queryZhifou(params) {
+  return request('https://fm.tingdao.com/thridpartyapi/h5/get_zhifou_themelist', {
+    method: 'POST',
+    body: params,
+  });
+}
