@@ -41,24 +41,34 @@ class PlayShare extends Component {
     dispatch({
       type: 'global/webview',
       payload: params,
-      callback: this.play,
+      // callback: this.play,
     });
   }
 
   componentWillUnmount() {
   }
 
-  play = () => {
+  play = (flag) => {
     const {playing, playIndex} = this.state;
-    console.log(this.audio,playing,'playing!!!!!!!!!!!!!')
-    if(playing) {
-      this.setState({
-        playing: false,
-      },this.audio&&this.audio.playAudio())
-    }else {
-      this.setState({
-        playing: true
-      },this.audio&&this.audio.playAudio())
+    console.log('start play!!!!!!!!!!!!!!!!!!!!')
+    const {
+      global: { list },
+    } = this.props;
+    const { content = [] } = list;
+    let detail = {};
+    if (content.length > playIndex) {
+      detail = content[playIndex];
+    } 
+    if(detail !== {}) {
+      if(flag || !playing) {
+        this.setState({
+          playing: true
+        },this.audio&&this.audio.startPlay())
+      }else {
+        this.setState({
+          playing: false,
+        },this.audio&&this.audio.stopPlay())
+      }
     }
   }
 
@@ -67,7 +77,7 @@ class PlayShare extends Component {
     console.log(this.audio,playing,'next!!!!!!!!!!!!!')
     this.setState({
       playIndex: playIndex === 2 ? playIndex : playIndex+1,
-    },this.audio&&this.audio.playAudio())
+    },this.audio&&this.audio.startPlay())
   }
 
   render() {
@@ -78,12 +88,10 @@ class PlayShare extends Component {
     const { content = [] } = list;
     let detail = {};
     if (content.length > playIndex) {
-      console.log(detail)
       detail = content[playIndex];
     } else if (playIndex !== 0) {
       this.play();
     }
-    console.log(detail,this.state,this.props)
 
     return (
       <div className={styles.main}>

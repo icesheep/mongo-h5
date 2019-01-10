@@ -125,7 +125,7 @@ class SingerLive extends Component {
             playing: true,
           },
           () => {
-            if(lag) {
+            if(lag === true) {
               setTimeout(() => {
                 players&&players.play();
               }, 1000);
@@ -200,9 +200,14 @@ class SingerLive extends Component {
         {/* 直播音频播放控件 */}
         <VideoJsForReact
           sourceChanged={(player, players) => {
-            this.setState({ players }, ()=>{this.play(true)});
+            this.setState({ players });
           }}
           onReady={(player, players) => {
+            console.log('ready!!!!!!!!!!!!!!!!!!!!!!')
+            this.setState({ players }, ()=>{this.play(true)});
+          }}
+          onCanPlay={(player, players) => {
+            console.log('canplay!!!!!!!!!!!!!!!!!!!!!!')
             this.setState({ players }, ()=>{this.play(true)});
           }}
           {...videoJsOptions}

@@ -10,7 +10,6 @@ export default class Page1 extends Component {
       playingtime: 0,   //播放时间 
       buffertime: 0,   //缓冲时间
       duration: 0,   //总时长
-      playing: false,
     };
   }
 
@@ -20,16 +19,17 @@ export default class Page1 extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.src !== prevProps.src) {
-      setTimeout(() => {
+      this.videoContainer.canplay = () =>{
         this.videoContainer.play();
         this.PlayingMusic();
-      },1000)
+      }
     }
   }
 
   componentWillUnmount() {
     clearTimeout(this.timer);
     cancelAnimationFrame(this.requestRef);
+    clearInterval(this.playTimer);
   }
 
   // 播放时间刷新
@@ -67,30 +67,17 @@ export default class Page1 extends Component {
     return hours ? `${hours}:${minutes}:${seconds}` : `${minutes}:${seconds}`;
   }
 
-  // 播放、暂停功能
-  playAudio = () => {
-    const {playing} = this.state;
-    if(playing) {
-      this.setState({
-        playing: false,
-      }, ()=>{
-        this.videoContainer.pause();
-        clearTimeout(this.timer);
-        cancelAnimationFrame(this.requestRef);
-      })
-    }else {
-      this.setState({
-        playing: true,
-      }, ()=>{
-        this.videoContainer.play();
-        this.PlayingMusic();
-      })
-    }
+  // 播放
+  startPlay = () => {
+    this.videoContainer.play();
+    this.PlayingMusic();
   }
 
   // 停止播放
   stopPlay = () => {
     this.videoContainer.pause();
+    clearTimeout(this.timer);
+    cancelAnimationFrame(this.requestRef);
   }
   //设置进度条
   setTimeOnPc = (time) =>{
@@ -182,8 +169,9 @@ export default class Page1 extends Component {
           src={this.props.src}
           style={{display:'none'}}
           ref={node => this.videoContainer = node}
-          preload="none" controlsList="nodownload"
+          preload={true}
           onEnded={this.props.next}
+          onCanPlay={()=>{console.log('canplay!!!!!!!!!!!!!!!!!!!!!!');this.props.play(true)}}
         ></audio>
       </div>;
   }

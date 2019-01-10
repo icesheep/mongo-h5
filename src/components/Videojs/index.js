@@ -73,6 +73,11 @@ export default class VideoJsForReact extends Component {
             props.onEnded();
           }
         });
+        // player.on('canplay', function() {
+        //   if (!!props.onCanPlay) {
+        //     props.onCanPlay();
+        //   }
+        // });
       }
     );
   }
