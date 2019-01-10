@@ -108,6 +108,7 @@ class Share extends Component {
 
   // 格式化时间
   formatterTime = (time) => {
+    time = time/1000;
     let hours = Math.floor(Math.round(time) / 3600);
     let minutes = Math.floor(Math.round(time) % 3600 / 60);
     let seconds = Math.floor(Math.round(time) % 60);

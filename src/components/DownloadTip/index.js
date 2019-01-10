@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Icon } from 'antd';
 import mgLogo from '../../assets/mgdt_logo.png';
+import mangguo from '../../assets/singer/mangguo.png';
 import styles from './index.less';
 
 class DownloadTip extends Component {
@@ -29,19 +30,19 @@ class DownloadTip extends Component {
     return (
       <div>
         {showFix&&!this.isApp ? (
-          <Row className={styles.fix1}>
+          <div className={styles.fix1}>
             <Icon type="close" className={styles.close} onClick={this.closeFix} />
-            <Col span={4}>
+            <div span={4}>
               <img src={mgLogo} />
-            </Col>
-            <Col span={14} className={styles.p1}>
-              芒果动听APP 邀您一起加入
-              <br /> 加油美好生活！
-            </Col>
-            <Col span={6} className={styles.p2} onClick={this.downApp}>
-              下载APP
-            </Col>
-          </Row>
+            </div>
+            <div span={14} className={styles.p1}>
+              <img className={styles.d1} src={mangguo} />
+              <div className={styles.d2}>湖南广电唯一官方音频平</div>
+            </div>
+            <div className={styles.p2} onClick={this.downApp}>
+            下载听全集
+            </div>
+          </div>
         ) : null}
       </div>
     );
