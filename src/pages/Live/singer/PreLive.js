@@ -39,7 +39,7 @@ class PreLive extends Component {
                 <div className={styles.time}>20</div>
                 <div className={styles.devide}>:</div>
                 <div className={styles.time}>00</div>
-                <div className={styles.devide}>-</div>
+                <div className={styles.dd}></div>
                 <div className={styles.time}>22</div>
                 <div className={styles.devide}>:</div>
                 <div className={styles.time}>00</div>

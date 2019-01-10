@@ -30,7 +30,7 @@ class Ready extends Component {
         sources: [
           // 视频源
           {
-            src: 'http://mgtj-live.oss-cn-shanghai.aliyuncs.com/h2/index.m3u8',
+            src: '',
             // src: 'http://mgtj-live.oss-cn-shanghai.aliyuncs.com/h1/index.m3u8',   //音频地址
             type: 'application/x-mpegURL', //音频类型m3u8：application/x-mpegURL，mp3、mp4：video/mp4
             label: 'HLS1',
@@ -137,7 +137,7 @@ class Ready extends Component {
   };
 
   render() {
-    const { hour, minute, second, playing, videoJsOptions } = this.state;
+    const { hour, minute, second, playing, videoJsOptions, nowPlayUrl } = this.state;
     const {
       begin_time,
       end_time,
@@ -148,7 +148,14 @@ class Ready extends Component {
       msg,
       desc,
     } = this.props;
-    // console.log(this.props)
+    if(videoJsOptions.sources[0].src === '' && data_list.length > 0) {
+      videoJsOptions.sources[0].src = data_list[nowPlayUrl || 0].playurl;
+      if(data_list[nowPlayUrl || 0].playurl&&videoJsOptions.sources[0].src.includes('m3u8')) {
+        videoJsOptions.sources[0].type= 'application/x-mpegURL'
+      }else {
+        videoJsOptions.sources[0].type= 'video/mp4'
+      }
+    }
     return (
       <div className={styles.main}>
         <img className={styles.imgBg} src={banner_images||bg1} />  
@@ -183,7 +190,8 @@ class Ready extends Component {
           <div className={styles.item5}>{desc}</div>
           {data_list.length > 0 &&
             data_list.map((v, index) => (
-              <div>
+              <div style={{position: 'relative'}}>
+                <div className={styles.mask} />
                 <div style={{ backgroundImage: `url(${v.images})` }} className={styles.item6}>
                   <img
                     onClick={() => this.playLastAudio(v, index)}
@@ -203,7 +211,7 @@ class Ready extends Component {
           preload="none" controlsList="nodownload"
           onEnded={this.playLastAudio}
         ></audio> */}
-        <VideoJsForReact
+        {data_list.length > 0 ? <VideoJsForReact
           sourceChanged={(player, players) => {
             this.setState({ players });
           }}
@@ -212,7 +220,7 @@ class Ready extends Component {
           }}
           onEnded={this.playLastAudio}
           {...videoJsOptions}
-        />
+        /> : null}
       </div>
     );
   }
