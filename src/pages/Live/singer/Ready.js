@@ -162,7 +162,6 @@ class Ready extends Component {
         <img className={styles.imgBg} src={banner_images||bg1} />  
         <div className={styles.mask} />
         <div className={styles.div1}>
-          <img src={fmImg} className={styles.fmlogo} />
           <div className={styles.item1}>{banner_title}</div>
           <div className={styles.item2}>即将呈现</div>
           <div className={styles.item3}>
