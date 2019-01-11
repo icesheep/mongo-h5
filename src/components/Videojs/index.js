@@ -86,8 +86,10 @@ export default class VideoJsForReact extends Component {
     if (this.player) {
       const { sources } = this.props;
       if (this.player.src() !== sources[0].src) {
+        console.log('source changed!!!!!!!!!!!!!')
         // 若存在多个流地址，则开启videoJsResolutionSwitcher
         this.player.src(sources);
+        this.player.load();
       }
     }
   }

@@ -211,16 +211,16 @@ class Ready extends Component {
           preload="none" controlsList="nodownload"
           onEnded={this.playLastAudio}
         ></audio> */}
-        {data_list.length > 0 ? <VideoJsForReact
+        <VideoJsForReact
           sourceChanged={(player, players) => {
-            this.setState({ players });
+            this.setState({ players });players.load();
           }}
           onReady={(player, players) => {
-            this.setState({ players });
+            this.setState({ players });players.load();
           }}
           onEnded={this.playLastAudio}
           {...videoJsOptions}
-        /> : null}
+        />
       </div>
     );
   }
