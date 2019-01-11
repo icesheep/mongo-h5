@@ -8,7 +8,7 @@ import IntroImg from '../../../assets/singer/intro.png';
 import PlayImg from '../../../assets/singer/play.png';
 import PauseImg from '../../../assets/singer/pause.png';
 import bg1 from '../../../assets/singer/bg1.png';
-import fmImg from '../../../assets/singer/fm.png';
+// import fmImg from '../../../assets/singer/fm.png';
 
 class Ready extends Component {
   constructor(props) {
@@ -162,7 +162,7 @@ class Ready extends Component {
         <img className={styles.imgBg} src={banner_images||bg1} />  
         <div className={styles.mask} />
         <div className={styles.div1}>
-          <img src={fmImg} className={styles.fmlogo} />
+          {/* <img src={fmImg} className={styles.fmlogo} /> */}
           <div className={styles.item1}>{banner_title}</div>
           <div className={styles.item2}>即将呈现</div>
           <div className={styles.item3}>
