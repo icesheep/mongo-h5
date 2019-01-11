@@ -79,25 +79,30 @@ class Share extends Component {
   }
 
   play = (index) => {
+    const {
+      global: { list = {}},
+    } = this.props;
+    const { content = []} = list;
+    const nowDetail = (content.length>0 && content[index||0]) || {};
+    const {nowTheme} = this.state;
+    const themeid = nowTheme.themeid;
+    const type = parseInt(nowTheme.type);
+    const urlParams = new URL(window.location.href);
     if(this.isApp) {
       if(this.isLogin) {
-        WebView_getGeShouLiveInfo(playId, playType, banner_playurl,banner_title, function(data) {
+        WebView_playInApp(type, nowDetail.id, themeid, nowDetail.playUrl, function(data) {
           console.log(data);
         });
       }else {
-        WebView_getGeShouLiveInfo(playId, playType, banner_playurl,banner_title, function(data) {
+        WebView_playInApp(type, nowDetail.id, themeid, nowDetail.playUrl, function(data) {
           console.log(data);
         });
       }
     }else {
-      const {nowTheme} = this.state;
-      const cid = nowTheme.themeid;
-      const type = parseInt(nowTheme.type);
-      const urlParams = new URL(window.location.href);
-      if(type && cid) {
+      if(type && themeid) {
         window.location.href = `${urlParams.origin}${
           urlParams.pathname
-        }#/zhifou/player?cid=${cid}&type=${type}&index=${index}`;
+        }#/zhifou/player?cid=${themeid}&type=${type}&index=${index}`;
       }
     }
   }
@@ -129,7 +134,10 @@ class Share extends Component {
     console.log(this.state,this.props)
     return (
       <div className={styles.main}>
-        <div style={{ backgroundImage: `url("${Jay}")` }} className={styles.main1}>
+        <div
+          style={{ backgroundImage:`url("${detailDetail.imgUrl || Jay}")` }}
+          className={styles.main1}
+        >
           {' '}
         </div>
         <div className={styles.div1}>
