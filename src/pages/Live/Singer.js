@@ -1,6 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-unused-vars */
 import React, { Component } from 'react';
+import {Spin} from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import Ready from './singer/Ready';
@@ -106,7 +107,9 @@ class Singer extends Component {
             banner_title={banner_title}
             data_list={data_list}
             desc={desc}
-          /> : null
+          /> : <div style={{ paddingTop: 100, textAlign: 'center' }}>
+            <Spin size="large" />
+          </div>
         )}
       </div>
     );
