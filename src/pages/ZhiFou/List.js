@@ -17,7 +17,7 @@ class Share extends Component {
   constructor(props) {
     super(props);
     this.isApp = navigator.userAgent.includes('DongTing') || WebView_isDongTing();
-    this.isLogin = navigator.userAgent.includes('DongTing') || WebView_isDongTing();
+    this.isLogin = WebView_isLogin();
     this.state = {
       visible: false,
       nowTheme: {},
