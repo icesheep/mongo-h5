@@ -5,6 +5,7 @@ import { stringify } from 'qs';
 import request from '@/utils/request';
 import DownloadTip from '@/components/DownloadTip';
 import LoginTip from '@/components/LoginTip';
+import Tip from '@/components/Tip';
 import styles from './List.less';
 import Jay from '../../assets/bg-play.png';
 import Rec from '../../assets/singer/rec3.png';
@@ -20,6 +21,7 @@ class Share extends Component {
     this.isLogin = WebView_isLogin();
     this.state = {
       visible: false,
+      tipVisible: false,
       nowTheme: {},
     };
   }
@@ -122,8 +124,20 @@ class Share extends Component {
     return hours ? `${hours}:${minutes}:${seconds}` : `${minutes}:${seconds}`;
   }
 
+  openTip = ()=> {
+    this.setState({
+      tipVisible: true
+    })
+  }
+
+  closeTip = ()=> {
+    this.setState({
+      tipVisible: false
+    })
+  }
+
   render() {
-    const { visible, nowTheme } = this.state;
+    const { visible, nowTheme, tipVisible } = this.state;
     console.log(this.props)
     const {
       global: { list = {}, queryZhifou = {} },
@@ -164,7 +178,7 @@ class Share extends Component {
           </div>
           {content.length > 0 &&
             content.map((v, index) => (
-              <div onClick={()=>{if(index < 3){this.play(index)}}} className={index >= 3 && !this.isLogin ? styles.item40 : styles.item4}>
+              <div onClick={()=>{if(index < 3){this.play(index)}else{this.openTip()}}} className={index >= 3 && !this.isLogin ? styles.item40 : styles.item4}>
                 <div className={styles.index}>{index+1}</div>
                 <div className={styles.detail}>
                   <div className={styles.name}>{v.title}</div>
@@ -193,6 +207,7 @@ class Share extends Component {
             <Icon type="close" />
           </div>
         </div> : null}
+        {/* {tipVisible ? <Tip close={this.closeTip}/> : null} */}
       </div>
     );
   }

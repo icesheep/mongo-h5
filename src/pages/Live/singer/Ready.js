@@ -162,10 +162,7 @@ class Ready extends Component {
         <img className={styles.imgBg} src={banner_images||bg1} />  
         <div className={styles.mask} />
         <div className={styles.div1}>
-<<<<<<< HEAD
-=======
           {/* <img src={fmImg} className={styles.fmlogo} /> */}
->>>>>>> cd88efdb0fceff247db124e65e8c487c66c6d877
           <div className={styles.item1}>{banner_title}</div>
           <div className={styles.item2}>即将呈现</div>
           <div className={styles.item3}>
