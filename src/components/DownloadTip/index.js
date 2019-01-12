@@ -30,14 +30,14 @@ class DownloadTip extends Component {
     return (
       <div>
         {showFix&&!this.isApp ? (
-          <div className={styles.fix1}>
+          <div style={this.props.style} className={styles.fix1}>
             <Icon type="close" className={styles.close} onClick={this.closeFix} />
             <div span={4}>
               <img src={mgLogo} />
             </div>
             <div span={14} className={styles.p1}>
               <img className={styles.d1} src={mangguo} />
-              <div className={styles.d2}>湖南广电唯一官方音频平</div>
+              <div className={styles.d2}>湖南广电唯一官方音频平台</div>
             </div>
             <div className={styles.p2} onClick={this.downApp}>
             下载听全集

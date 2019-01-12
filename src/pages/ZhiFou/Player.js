@@ -59,12 +59,14 @@ class PlayShare extends Component {
     if (content.length > playIndex) {
       detail = content[playIndex];
     } 
-    if(detail !== {}) {
-      if(flag || !playing) {
+    console.log(detail,flag,playing)
+    if(Object.keys(detail).length > 0) {
+      if(flag===true || !playing) {
         this.setState({
           playing: true
         },this.audio&&this.audio.startPlay())
       }else {
+        console.log('stop!!!!!')
         this.setState({
           playing: false,
         },this.audio&&this.audio.stopPlay())
@@ -76,7 +78,7 @@ class PlayShare extends Component {
     const {playing, playIndex} = this.state;
     console.log(this.audio,playing,'next!!!!!!!!!!!!!')
     this.setState({
-      playIndex: playIndex === 2 ? playIndex : playIndex+1,
+      playIndex: playIndex === 2 ? playIndex : parseInt(playIndex)+1,
     },this.audio&&this.audio.startPlay())
   }
 
@@ -85,6 +87,7 @@ class PlayShare extends Component {
     const {
       global: { list },
     } = this.props;
+    console.log(this.state,this.props)
     const { content = [] } = list;
     let detail = {};
     if (content.length > playIndex) {
@@ -96,7 +99,7 @@ class PlayShare extends Component {
     return (
       <div className={styles.main}>
         <div
-          style={{ backgroundImage:`url("${detail.imgUrl || Jay}")` }}
+          style={{ backgroundImage:`url("${detail&&detail.imgUrl || Jay}")` }}
           className={styles.main1}
         >
           {' '}

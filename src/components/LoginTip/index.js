@@ -14,7 +14,7 @@ class LoginTip extends Component {
 
   render() {
     return (
-      <div className={styles.fix1}>
+      <div style={this.props.style} className={styles.fix1}>
         <div className={styles.title}>登录后可收听完整章节</div>
         <div className={styles.button} onClick={this.login}>登录</div>
       </div>

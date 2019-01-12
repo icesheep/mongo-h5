@@ -18,11 +18,10 @@ export default class Page1 extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.src !== prevProps.src) {
-      this.videoContainer.canplay = () =>{
-        this.videoContainer.play();
-        this.PlayingMusic();
-      }
+    if (this.props.src !== prevProps.src && prevProps.src !== undefined) {
+      // this.videoContainer.load();
+      // this.videoContainer.play();
+      // this.PlayingMusic();
     }
   }
 
@@ -98,7 +97,9 @@ export default class Page1 extends Component {
     if(!e.pageX&& !duration){
         return
     }
-    this.setTimeOnPc((e.pageX-this.progressDiv.offsetLeft)/(this.progressDiv.clientWidth)*duration)
+    if(e.pageX-this.progressDiv.offsetLeft < this.progressDiv.clientWidth) {
+      this.setTimeOnPc((e.pageX-this.progressDiv.offsetLeft)/(this.progressDiv.clientWidth)*duration)
+    }
   }
   // 开始拖动
   startChangeTime = (e) =>{
@@ -112,7 +113,7 @@ export default class Page1 extends Component {
     if(!point.pageX&& !duration){
         return
     }
-    if(point.pageX-this.progressDiv.offsetLeft <= this.progressDiv.clientWidth) {
+    if(point.pageX-this.progressDiv.offsetLeft < this.progressDiv.clientWidth) {
       this.setState(
         {
           playingtime: (point.pageX-this.progressDiv.offsetLeft)/(this.progressDiv.clientWidth)*duration,
@@ -169,7 +170,7 @@ export default class Page1 extends Component {
           src={this.props.src}
           style={{display:'none'}}
           ref={node => this.videoContainer = node}
-          preload={true}
+          preload='auto'
           onEnded={this.props.next}
           onCanPlay={()=>{console.log('canplay!!!!!!!!!!!!!!!!!!!!!!');this.props.play(true)}}
         ></audio>
