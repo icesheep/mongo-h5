@@ -158,9 +158,9 @@ class Share extends Component {
           <img src={detailDetail.imgUrl || Jay} className={styles.img1} />
           <div className={styles.item1}>
             <div className={styles.p1}>{detailDetail.title}</div>
-            <div className={styles.p2}>{detailDetail.subhead&&detailDetail.subhead.length>14 ? `${detailDetail.subhead.substring(0,14)}...` : detailDetail.subhead}</div>
-            <div className={styles.p3} onClick={()=>{this.showIntro(true)}}>{detailDetail.summary&&detailDetail.summary.length>28 ? `${detailDetail.summary.substring(0,28)}...` : detailDetail.summary}
-            <Icon type="right" style={{ }} />
+            <div className={styles.p2}>{detailDetail.subhead&&detailDetail.subhead.length>14 ? `${detailDetail.subhead.substring(0,15)}...` : detailDetail.subhead}</div>
+            <div className={styles.p3} onClick={()=>{this.showIntro(true)}}>{detailDetail.summary&&detailDetail.summary.length>28 ? `${detailDetail.summary.substring(0,30)}...` : detailDetail.summary}
+            <Icon type="right" className={styles.icon} />
             </div>
           </div>
         </div>
