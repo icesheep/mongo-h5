@@ -28,29 +28,46 @@ export default class Page1 extends Component {
   componentWillUnmount() {
     clearTimeout(this.timer);
     cancelAnimationFrame(this.requestRef);
-    clearInterval(this.playTimer);
   }
 
   // 播放时间刷新
   PlayingMusic = () => {
     this.requestRef = requestAnimationFrame(() => {
       this.timer = setTimeout(() => {
-        if(this.videoContainer) {
+        if(this.videoContainer&&this.videoContainer.duration) {
           let timeRages = this.videoContainer.buffered;
           let bufferedTime = 0
           if(timeRages.length !== 0){
               bufferedTime = timeRages.end(timeRages.length-1);
           }
-          this.setState(
-            {
-              playingtime: this.videoContainer.currentTime,
-              duration: this.videoContainer.duration,
-              buffertime: bufferedTime,
-            },
-            () => {
-              this.PlayingMusic();
-            }
-          );
+          if (this.videoContainer.currentTime === this.videoContainer.duration) {
+            // let { playIndex } = this.state;
+            // let temp = playIndex == 2  ? 2 : parseInt(playIndex) + 1;
+            this.setState(
+              {
+                playingtime: this.videoContainer.currentTime,
+                duration: this.videoContainer.duration,
+                buffertime: bufferedTime,
+                // playIndex: temp,
+              },
+              () => {
+                clearTimeout(this.timer);
+                cancelAnimationFrame(this.requestRef);
+                this.props.next();
+              }
+            );
+          } else {
+            this.setState(
+              {
+                playingtime: this.videoContainer.currentTime,
+                duration: this.videoContainer.duration,
+                buffertime: bufferedTime,
+              },
+              () => {
+                this.PlayingMusic();
+              }
+            );
+          }
         }
       }, 1000);
     });
@@ -67,7 +84,12 @@ export default class Page1 extends Component {
   }
 
   // 播放
+  loadPlay = () => {
+    this.videoContainer.load();
+  }
+  // 播放
   startPlay = () => {
+    this.videoContainer.pause();
     this.videoContainer.play();
     this.PlayingMusic();
   }
@@ -171,7 +193,7 @@ export default class Page1 extends Component {
           style={{display:'none'}}
           ref={node => this.videoContainer = node}
           preload='auto'
-          onEnded={this.props.next}
+          // onEnded={this.props.next}
           onCanPlay={()=>{console.log('canplay!!!!!!!!!!!!!!!!!!!!!!');this.props.play(true)}}
         ></audio>
       </div>;

@@ -8,6 +8,7 @@ import PlayGray from '../../assets/play-gray.png';
 import PauseGray from '../../assets/pause-gray.png';
 import mm from '../../assets/3.mp3';
 import Audio from '@/components/TimeLine';
+import Tip from '@/components/Tip';
 
 @connect(({ global }) => ({
   global,
@@ -16,6 +17,7 @@ class PlayShare extends Component {
   state = {
     playing: false, //播放状态
     playIndex: 0, //当前播放曲目index
+    tipVisible: false,
   };
 
   componentDidMount() {
@@ -77,13 +79,28 @@ class PlayShare extends Component {
   next = () => {
     const {playing, playIndex} = this.state;
     console.log(this.audio,playing,'next!!!!!!!!!!!!!')
+    if(playIndex === 2) {
+      this.openTip();
+    }
     this.setState({
       playIndex: playIndex === 2 ? playIndex : parseInt(playIndex)+1,
-    },this.audio&&this.audio.startPlay())
+    },()=>{this.audio&&this.audio.loadPlay();})
+  }
+
+  openTip = ()=> {
+    this.setState({
+      tipVisible: true
+    })
+  }
+
+  closeTip = ()=> {
+    this.setState({
+      tipVisible: false
+    })
   }
 
   render() {
-    const { playing, playIndex } = this.state;
+    const { playing, playIndex, tipVisible } = this.state;
     const {
       global: { list },
     } = this.props;
@@ -125,6 +142,7 @@ class PlayShare extends Component {
           </Col>
         </Row>
         <DownloadTip />
+        {tipVisible ? <Tip close={this.closeTip}/> : null}
       </div>
     );
   }
