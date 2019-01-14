@@ -21,7 +21,8 @@ class Tip extends Component {
 
   render() {
     return (
-      <div className={styles.fix1}>
+      <div>
+      <div className={styles.fix1}></div>
         <div className={styles.button1} onClick={this.isApp ? this.login : this.download}>{this.isApp ? '登录听全部' : '下载听全部'}</div>
         <div className={styles.button2} onClick={this.props.close}>再逛逛</div>
       </div>
