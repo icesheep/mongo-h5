@@ -138,14 +138,13 @@ class Share extends Component {
 
   render() {
     const { visible, nowTheme, tipVisible } = this.state;
-    console.log(this.props)
     const {
       global: { list = {}, queryZhifou = {} },
     } = this.props;
     const {data_list = []} = queryZhifou;
     const { content = [], count, detail = [] } = list;
     const detailDetail = detail && detail.length > 0 ? detail[0] : {};
-    console.log(this.state,this.props)
+    console.log(this.state,this.props,this.isApp,this.isLogin,!this.isLogin)
     return (
       <div className={styles.main}>
         <div
@@ -183,7 +182,7 @@ class Share extends Component {
                 <div className={styles.detail}>
                   <div className={styles.name}>{v.title}</div>
                   <div className={styles.mark}>
-                    <div className={styles.time}>{v.broadcastTime}</div>
+                    <div className={styles.time}>{v.broadcastTime&&v.broadcastTime.substring(0,10)}</div>
                     <Icon type="clock-circle" style={{fontSize:'0.2933rem', marginLeft: '0.4533rem' }} />
                     <div className={styles.duration}>{this.formatterTime(v.duration)}</div>
                     <Icon type="customer-service" style={{fontSize:'0.2933rem', marginLeft: '0.3467rem' }} />
