@@ -10,10 +10,12 @@ class Tip extends Component {
   }
 
   login = () => {
+    this.props.close();
     WebView_login();
   }
 
   download = () => {
+    this.props.close();
     window.open('https://fm.tingdao.com/html/h5.html');
   }
 

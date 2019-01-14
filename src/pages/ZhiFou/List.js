@@ -18,6 +18,7 @@ class Share extends Component {
   constructor(props) {
     super(props);
     this.isApp = navigator.userAgent.includes('DongTing') || WebView_isDongTing();
+    this.isLogin = false;
     this.isLogin = WebView_isLogin();
     this.state = {
       visible: false,
@@ -28,6 +29,10 @@ class Share extends Component {
 
   componentDidMount() {
     this.getData();
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timer);
   }
 
   getData = () => {
@@ -96,6 +101,7 @@ class Share extends Component {
           console.log(data);
         });
       }else {
+        this.timer = setTimeout(this.openTip,20000);
         WebView_playInApp(type, nowDetail.id, themeid, nowDetail.playUrl, function(data) {
           console.log(data);
         });
@@ -133,7 +139,7 @@ class Share extends Component {
   closeTip = ()=> {
     this.setState({
       tipVisible: false
-    })
+    },()=>{this.timer = setTimeout(this.openTip,20000)})
   }
 
   render() {
@@ -183,9 +189,9 @@ class Share extends Component {
                   <div className={styles.name}>{v.title}</div>
                   <div className={styles.mark}>
                     <div className={styles.time}>{v.broadcastTime&&v.broadcastTime.substring(0,10)}</div>
-                    <Icon type="clock-circle" style={{fontSize:'0.2933rem', marginLeft: '0.4533rem' }} />
+                    <Icon type="clock-circle" style={{ marginLeft: '0.4533rem' }} />
                     <div className={styles.duration}>{this.formatterTime(v.duration)}</div>
-                    <Icon type="customer-service" style={{fontSize:'0.2933rem', marginLeft: '0.3467rem' }} />
+                    <Icon type="customer-service" style={{ marginLeft: '0.3467rem' }} />
                     <div className={styles.count}>{v.playCount}</div>
                   </div>
                 </div>
@@ -196,8 +202,10 @@ class Share extends Component {
         {this.isApp && !this.isLogin ? <LoginTip style={{position: 'fixed'}} /> : null}
         {visible ? <div style={{ backgroundImage: `url("${Rec}")` }} className={styles.tanchuang}>
           <div className={styles.head}>
-            <div className={styles.title}>{detailDetail.title}</div>
-            <div className={styles.subhead}>{detailDetail.subhead}</div>
+            <div className={styles.border}>
+              <div className={styles.title}>{detailDetail.title}</div>
+              <div className={styles.subhead}>{detailDetail.subhead}</div>
+            </div>
           </div>
           <div className={styles.content}>
               <img src={Jieshao} />
@@ -209,7 +217,7 @@ class Share extends Component {
             <Icon type="close" />
           </div>
         </div> : null}
-        {/* {tipVisible ? <Tip close={this.closeTip}/> : null} */}
+        {tipVisible ? <Tip close={this.closeTip}/> : null}
       </div>
     );
   }

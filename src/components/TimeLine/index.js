@@ -14,7 +14,25 @@ export default class Page1 extends Component {
   }
 
   componentDidMount() {
-
+    // 为元素添加事件监听   
+    document.getElementById('playLine').addEventListener("touchstart", (e) => {
+      // 执行滚动回调
+      this.startChangeTime(e)
+    }, {
+      passive: false //  禁止 passive 效果
+    })
+    document.getElementById('playLine').addEventListener("touchmove", (e) => {
+      // 执行滚动回调
+      this.moveProgress(e)
+    }, {
+      passive: false //  禁止 passive 效果
+    })
+    document.getElementById('playLine').addEventListener("touchend", (e) => {
+      // 执行滚动回调
+      this.moveEnd(e)
+    }, {
+      passive: false //  禁止 passive 效果
+    })
   }
 
   componentDidUpdate(prevProps) {
@@ -125,11 +143,13 @@ export default class Page1 extends Component {
   }
   // 开始拖动
   startChangeTime = (e) =>{
+    e.preventDefault();
     clearTimeout(this.timer);
     cancelAnimationFrame(this.requestRef);
   }
   // 拖动播放条
   moveProgress = (e) =>{
+    e.preventDefault();
     var point = this.getPoint(e);
     const {duration} = this.state;
     if(!point.pageX&& !duration){
@@ -145,7 +165,8 @@ export default class Page1 extends Component {
     // this.setTimeOnPc()
   }
 
-  moveEnd = () => {
+  moveEnd = (e) => {
+    e.preventDefault();
     let audio = this.videoContainer;
     const {playingtime} = this.state;
     if(audio.currentTime !== 0 && playingtime <= audio.duration) {
@@ -171,9 +192,10 @@ export default class Page1 extends Component {
               style={{width: (duration) ? `${playingtime/duration*100}%` : duration}}
             />
             <div 
-              onTouchStart={this.startChangeTime}
-              onTouchMove={this.moveProgress}
-              onTouchEnd={this.moveEnd}
+              id="playLine"
+              // onTouchStart={this.startChangeTime}
+              // onTouchMove={this.moveProgress}
+              // onTouchEnd={this.moveEnd}
               // onMouseDown={this.startChangeTime}
               // onMouseMove={this.moveProgress}
               // onMouseUp={this.moveEnd}

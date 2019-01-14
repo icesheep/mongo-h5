@@ -114,7 +114,7 @@ class PlayShare extends Component {
     }
 
     return (
-      <div className={styles.main}>
+      <div className={styles.main} onTouchStart={(e)=>{e.preventDefault()}}>
         <div
           style={{ backgroundImage:`url("${detail&&detail.imgUrl || Jay}")` }}
           className={styles.main1}
