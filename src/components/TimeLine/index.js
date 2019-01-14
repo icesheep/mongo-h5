@@ -192,7 +192,7 @@ export default class Page1 extends Component {
               style={{width: (duration) ? `${playingtime/duration*100}%` : duration}}
             />
             <div 
-              id="playLine"
+              
               // onTouchStart={this.startChangeTime}
               // onTouchMove={this.moveProgress}
               // onTouchEnd={this.moveEnd}
@@ -201,7 +201,9 @@ export default class Page1 extends Component {
               // onMouseUp={this.moveEnd}
               className={styles.dot}
               style={{left: (duration) ? `${playingtime/duration*100}%` : duration}}
-            />
+            >
+              <div id="playLine" className={styles.dd}></div>
+            </div>
             {/* <div 
               className={styles.buffer}
               style={{width: (buffertime) ? `${buffertime/duration*100}%` : 0}}

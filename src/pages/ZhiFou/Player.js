@@ -79,11 +79,11 @@ class PlayShare extends Component {
   next = () => {
     const {playing, playIndex} = this.state;
     console.log(this.audio,playing,'next!!!!!!!!!!!!!')
-    if(playIndex === 2) {
+    if(playIndex == 2) {
       this.openTip();
     }
     this.setState({
-      playIndex: playIndex === 2 ? playIndex : parseInt(playIndex)+1,
+      playIndex: playIndex == 2 ? playIndex : parseInt(playIndex)+1,
     },()=>{this.audio&&this.audio.loadPlay();})
   }
 
@@ -104,17 +104,14 @@ class PlayShare extends Component {
     const {
       global: { list },
     } = this.props;
-    console.log(this.state,this.props)
     const { content = [] } = list;
     let detail = {};
     if (content.length > playIndex) {
       detail = content[playIndex];
-    } else if (playIndex !== 0) {
-      this.play();
-    }
-
+    } 
+    console.log(detail,this.state,this.props)
     return (
-      <div className={styles.main} onTouchStart={(e)=>{e.preventDefault()}}>
+      <div className={styles.main}>
         <div
           style={{ backgroundImage:`url("${detail&&detail.imgUrl || Jay}")` }}
           className={styles.main1}
