@@ -29,12 +29,11 @@ class Share extends Component {
 
   componentDidMount() {
     this.isApp = navigator.userAgent.includes('DongTing') || WebView_isDongTing();
-    this.state = {
+    this.setState({
       isLogin: WebView_isLogin() ? true : false,
-    };
+    });
     this.getData();
-    const {isLogin} = this.state;
-    console.log("isLogin:", isLogin); // 判断登录信息
+    console.log("isLogin:", WebView_isLogin() ? true : false); // 判断登录信息
   }
 
   componentWillUnmount() {
@@ -200,7 +199,7 @@ class Share extends Component {
           </div>
           {content.length > 0 &&
             content.map((v, index) => (
-              <div onClick={()=>{if(index < 3){this.play(index)}else{this.openTip()}}} className={index >= 3 && !isLogin ? styles.item40 : styles.item4}>
+              <div onClick={()=>{if(index < 3 || isLogin){this.play(index)}else{this.openTip()}}} className={index >= 3 && !isLogin ? styles.item40 : styles.item4}>
                 <div className={styles.index}>{index+1}</div>
                 <div className={styles.detail}>
                   <div className={styles.name}>{v.title}</div>

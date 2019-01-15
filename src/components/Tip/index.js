@@ -9,6 +9,10 @@ class Tip extends Component {
     };
   }
 
+  componentDidMount() {
+    this.isApp = navigator.userAgent.includes('DongTing') || WebView_isDongTing();
+  }
+
   login = () => {
     WebView_login((r)=>{console.log(r)},this.props.setLogin);
     this.props.close(true);

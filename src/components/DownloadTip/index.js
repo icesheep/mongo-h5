@@ -13,6 +13,10 @@ class DownloadTip extends Component {
     };
   }
 
+  componentDidMount() {
+    this.isApp = navigator.userAgent.includes('DongTing') || WebView_isDongTing();
+  }
+  
   // 关闭弹窗
   closeFix = () => {
     this.setState({
