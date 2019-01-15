@@ -18,12 +18,12 @@ class Share extends Component {
   constructor(props) {
     super(props);
     this.isApp = navigator.userAgent.includes('DongTing') || WebView_isDongTing();
-    this.isLogin = false;
-    this.isLogin = WebView_isLogin();
+    // this.isLogin = WebView_isLogin();
     this.state = {
       visible: false,
       tipVisible: false,
       nowTheme: {},
+      isLogin: WebView_isLogin(),
     };
   }
 
@@ -86,6 +86,7 @@ class Share extends Component {
   }
 
   play = (index) => {
+    const {isLogin} = this.state;
     const {
       global: { list = {}},
     } = this.props;
@@ -96,7 +97,7 @@ class Share extends Component {
     const type = parseInt(nowTheme.type);
     const urlParams = new URL(window.location.href);
     if(this.isApp) {
-      if(this.isLogin) {
+      if(isLogin) {
         WebView_playInApp(type, nowDetail.id, themeid, nowDetail.playUrl, function(data) {
           console.log(data);
         });
@@ -148,19 +149,19 @@ class Share extends Component {
 
   setLogin = (e) => {
     if(e) {
-      this.isLogin = true;
+      this.setState({isLogin: true})
     }
   }
 
   render() {
-    const { visible, nowTheme, tipVisible } = this.state;
+    const { visible, nowTheme, tipVisible, isLogin } = this.state;
     const {
       global: { list = {}, queryZhifou = {} },
     } = this.props;
     const {data_list = []} = queryZhifou;
     const { content = [], count, detail = [] } = list;
     const detailDetail = detail && detail.length > 0 ? detail[0] : {};
-    console.log(this.state,this.props,this.isApp,this.isLogin,!this.isLogin)
+    console.log(this.state,this.props,this.isApp,isLogin)
     return (
       <div className={styles.main}>
         <div
@@ -193,7 +194,7 @@ class Share extends Component {
           </div>
           {content.length > 0 &&
             content.map((v, index) => (
-              <div onClick={()=>{if(index < 3){this.play(index)}else{this.openTip()}}} className={index >= 3 && !this.isLogin ? styles.item40 : styles.item4}>
+              <div onClick={()=>{if(index < 3){this.play(index)}else{this.openTip()}}} className={index >= 3 && !isLogin ? styles.item40 : styles.item4}>
                 <div className={styles.index}>{index+1}</div>
                 <div className={styles.detail}>
                   <div className={styles.name}>{v.title}</div>
@@ -209,7 +210,7 @@ class Share extends Component {
             ))}
         </div>
         {!this.isApp ? <DownloadTip style={{position: 'fixed'}} /> : null}
-        {this.isApp && !this.isLogin ? <LoginTip setLogin={this.setLogin} style={{position: 'fixed'}} /> : null}
+        {this.isApp && !isLogin ? <LoginTip setLogin={this.setLogin} style={{position: 'fixed'}} /> : null}
         {visible ? <div style={{ backgroundImage: `url("${Rec}")` }} className={styles.tanchuang}>
           <div className={styles.head}>
             <div className={styles.border}>
