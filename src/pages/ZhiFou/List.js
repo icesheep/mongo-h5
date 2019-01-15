@@ -140,10 +140,16 @@ class Share extends Component {
     })
   }
 
-  closeTip = ()=> {
+  closeTip = (flag)=> {
     this.setState({
       tipVisible: false
-    },()=>{this.startTimeout()})
+    },()=>{if(!flag){this.startTimeout()}})
+  }
+
+  setLogin = (e) => {
+    if(e) {
+      this.isLogin = true;
+    }
   }
 
   render() {
@@ -221,7 +227,7 @@ class Share extends Component {
             <Icon type="close" />
           </div>
         </div> : null}
-        {tipVisible ? <Tip close={this.closeTip}/> : null}
+        {tipVisible ? <Tip setLogin={this.setLogin} close={this.closeTip}/> : null}
       </div>
     );
   }
