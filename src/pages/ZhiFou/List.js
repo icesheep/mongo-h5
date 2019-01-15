@@ -209,7 +209,7 @@ class Share extends Component {
             ))}
         </div>
         {!this.isApp ? <DownloadTip style={{position: 'fixed'}} /> : null}
-        {this.isApp && !this.isLogin ? <LoginTip style={{position: 'fixed'}} /> : null}
+        {this.isApp && !this.isLogin ? <LoginTip setLogin={this.setLogin} style={{position: 'fixed'}} /> : null}
         {visible ? <div style={{ backgroundImage: `url("${Rec}")` }} className={styles.tanchuang}>
           <div className={styles.head}>
             <div className={styles.border}>

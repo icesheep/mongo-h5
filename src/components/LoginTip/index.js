@@ -9,7 +9,7 @@ class LoginTip extends Component {
   }
 
   login = () => {
-    WebView_login();
+    WebView_login((r)=>{console.log(r)},this.props.setLogin);
   }
 
   render() {

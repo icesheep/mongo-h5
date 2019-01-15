@@ -10,7 +10,7 @@ class Tip extends Component {
   }
 
   login = () => {
-    WebView_login(this.props.setLogin);
+    WebView_login((r)=>{console.log(r)},this.props.setLogin);
     this.props.close(true);
   }
 
