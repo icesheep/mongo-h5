@@ -95,6 +95,8 @@ class Share extends Component {
   }
 
   play = (index) => {
+    // 点击播放的时候判断
+    this.isApp = navigator.userAgent.includes('DongTing') || WebView_isDongTing();
     const {isLogin} = this.state;
     const {
       global: { list = {}},
