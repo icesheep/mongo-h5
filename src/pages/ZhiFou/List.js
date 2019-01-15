@@ -101,7 +101,7 @@ class Share extends Component {
           console.log(data);
         });
       }else {
-        this.timer = setTimeout(this.openTip,20000);
+        this.startTimeout();
         WebView_playInApp(type, nowDetail.id, themeid, nowDetail.playUrl, function(data) {
           console.log(data);
         });
@@ -113,6 +113,10 @@ class Share extends Component {
         }#/zhifou/player?cid=${themeid}&type=${type}&index=${index}`;
       }
     }
+  }
+
+  startTimeout = () => {
+    this.timer = setTimeout(this.openTip,120000);
   }
 
   showTheme = (nowTheme) => {
@@ -139,7 +143,7 @@ class Share extends Component {
   closeTip = ()=> {
     this.setState({
       tipVisible: false
-    },()=>{this.timer = setTimeout(this.openTip,20000)})
+    },()=>{this.startTimeout()})
   }
 
   render() {
