@@ -28,12 +28,16 @@ class Share extends Component {
   }
 
   componentDidMount() {
+    console.log("DongTing:", navigator.userAgent.includes('DongTing'));
     this.isApp = navigator.userAgent.includes('DongTing') || WebView_isDongTing();
     this.setState({
       isLogin: WebView_isLogin() ? true : false,
     });
     this.getData();
-    console.log("isLogin:", WebView_isLogin() ? true : false); // 判断登录信息
+    console.log("isLogin:", WebView_isLogin() ? true : false); // WebView_isLogin
+    console.log("this.isApp:", this.isApp); // 判断登录信息
+    // 自动登录逻辑
+    WebView_login((r)=>{console.log(r)}, this.setLogin, "2");
   }
 
   componentWillUnmount() {
@@ -103,12 +107,12 @@ class Share extends Component {
     const urlParams = new URL(window.location.href);
     if(this.isApp) {
       if(isLogin) {
-        WebView_playInApp(type, nowDetail.id, themeid, nowDetail.playUrl, function(data) {
+        WebView_playInApp(type, nowDetail.id + "", themeid, nowDetail.playUrl, function(data) {
           console.log(data);
         });
       }else {
         this.startTimeout();
-        WebView_playInApp(type, nowDetail.id, themeid, nowDetail.playUrl, function(data) {
+        WebView_playInApp(type, nowDetail.id + "", themeid, nowDetail.playUrl, function(data) {
           console.log(data);
         });
       }
