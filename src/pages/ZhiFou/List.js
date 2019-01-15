@@ -23,12 +23,18 @@ class Share extends Component {
       visible: false,
       tipVisible: false,
       nowTheme: {},
-      isLogin: WebView_isLogin(),
+      isLogin: WebView_isLogin() ? true : false,
     };
   }
 
   componentDidMount() {
+    this.isApp = navigator.userAgent.includes('DongTing') || WebView_isDongTing();
+    this.state = {
+      isLogin: WebView_isLogin() ? true : false,
+    };
     this.getData();
+    const {isLogin} = this.state;
+    console.log("isLogin:", isLogin); // 判断登录信息
   }
 
   componentWillUnmount() {
