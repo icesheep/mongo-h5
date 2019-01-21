@@ -194,7 +194,7 @@ class Share extends Component {
         <div className={styles.div2}>
           <div className={styles.item3}>
             {data_list.length>0&&data_list.map(v=>
-            <div onClick={()=>{this.showTheme(v)}} className={styles.title}><div style={{fontWeight: v.id===nowTheme.id ? '600' : null}} className={styles.name}>{v.title}</div>
+            <div onClick={()=>{this.showTheme(v)}} className={styles.title}><div style={{fontWeight: v.id===nowTheme.id ? '600' : null,color: v.id===nowTheme.id ? '#000000' : null}} className={styles.name}>{v.title}</div>
             <div className={v.id===nowTheme.id ? styles.border : ''}></div>
             </div>)}
           </div>
