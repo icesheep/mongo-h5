@@ -16,6 +16,9 @@ export default [
       { path: '/activity/singer-live', component: './Live/singer/Live' }, 
       { path: '/zhifou', component: './ZhiFou/List' }, 
       { path: '/zhifou/player', component: './ZhiFou/Player' }, 
+      { path: '/newyear', component: './NewYear/Singer' }, 
+      { path: '/newyear/prelive', component: './NewYear/singer/Ready' }, 
+      { path: '/newyear/live', component: './NewYear/singer/Live' }, 
     ],
   },
 ];

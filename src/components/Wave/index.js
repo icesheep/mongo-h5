@@ -22,7 +22,13 @@ class Wave extends Component {
   drawCanvas = () => {
     if (this.canvas.getContext) {
       var ctx = this.canvas.getContext('2d');
-      ctx.fillStyle = '#F7105C';
+      let linearGradient1 = '#F7105C';
+      if(this.props.color) {
+        linearGradient1 = ctx.createLinearGradient(0,0,0,100);
+        linearGradient1.addColorStop(0  , '#FEDF60');
+        linearGradient1.addColorStop(1, '#FF6933');
+      }
+      ctx.fillStyle = linearGradient1;
       ctx.clearRect(0, 0, this.canvas.offsetWidth, this.canvas.offsetHeight);
       for (let i = 0; i <= this.canvas.offsetWidth; i += this.devide) {
         if(this.arr.length > Math.floor(i/this.devide)) {
