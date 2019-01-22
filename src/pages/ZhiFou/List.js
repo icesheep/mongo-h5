@@ -80,6 +80,8 @@ class Share extends Component {
       param: {
         type: v.type,
         cid: v.themeid,
+        count: 100,
+        offset: 1
       },
     };
     dispatch({
