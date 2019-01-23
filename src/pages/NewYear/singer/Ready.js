@@ -5,8 +5,8 @@ import styles from './Ready.less';
 
 import music3 from '../../../assets/3.mp3';
 import DengLongImg from '../../../assets/newyear/denglong.png';
-import PlayImg from '../../../assets/singer/play.png';
-import PauseImg from '../../../assets/singer/pause.png';
+import PlayImg from '../../../assets/newyear/play.png';
+import PauseImg from '../../../assets/newyear/pause.png';
 import bg1 from '../../../assets/singer/bg1.png';
 // import fmImg from '../../../assets/singer/fm.png';
 
@@ -145,7 +145,7 @@ class Ready extends Component {
       banner_images,
       banner_playurl,
       banner_title,
-      data_list = [],
+      data_list = [1],
       msg,
       desc,
     } = this.props;

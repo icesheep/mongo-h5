@@ -6,8 +6,8 @@ import styles from './Live.less';
 
 import DengLongImg from '../../../assets/newyear/denglong.png';
 import bg1 from '../../../assets/singer/bg1.png';
-import PlayImg from '../../../assets/singer/play.png';
-import PauseImg from '../../../assets/singer/pause.png';
+import PlayImg from '../../../assets/newyear/play.png';
+import PauseImg from '../../../assets/newyear/pause.png';
 
 class SingerLive extends Component {
   constructor(props) {
