@@ -213,7 +213,7 @@ class Share extends Component {
               <div onClick={()=>{if(index < 3 || isLogin){this.play(index)}else{this.openTip()}}} className={index >= 3 && !isLogin ? styles.item40 : styles.item4}>
                 <div className={styles.index}>{index+1}</div>
                 <div className={styles.detail}>
-                  <div className={styles.name}>{v.title}</div>
+                  <div className={styles.name}>{v.publishName}</div>
                   <div className={styles.mark}>
                     <div className={styles.time}>{v.broadcastTime&&v.broadcastTime.substring(0,10)}</div>
                     <Icon type="clock-circle" style={{ marginLeft: '0.4533rem' }} />
@@ -230,7 +230,7 @@ class Share extends Component {
         {visible ? <div style={{ backgroundImage: `url("${Rec}")` }} className={styles.tanchuang}>
           <div className={styles.head}>
             <div className={styles.border}>
-              <div className={styles.title}>{detailDetail.title}</div>
+              <div className={styles.title}>{detailDetail.publishName}</div>
               <div className={styles.subhead}>{detailDetail.subhead}</div>
             </div>
           </div>

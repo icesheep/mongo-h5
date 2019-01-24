@@ -124,7 +124,7 @@ class PlayShare extends Component {
         <Row className={styles.div1}>
           <img src={detail && detail.imgUrl ||Jay} className={styles.img1} />
           <Col span={20} offset={2} className={styles.item1}>
-            {detail && detail.title}
+            {detail && detail.publishName}
           </Col>
           <img
             // onClick={this.playAudio}
