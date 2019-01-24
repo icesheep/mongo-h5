@@ -8,6 +8,7 @@ import DengLongImg from '../../../assets/newyear/denglong.png';
 import PlayImg from '../../../assets/newyear/play.png';
 import PauseImg from '../../../assets/newyear/pause.png';
 import bg1 from '../../../assets/singer/bg1.png';
+import VoiceImg from '../../../assets/newyear/voice.png';
 // import fmImg from '../../../assets/singer/fm.png';
 
 class Ready extends Component {
@@ -189,10 +190,10 @@ class Ready extends Component {
             data_list.map((v, index) => (
               <div style={{position: 'relative'}}>
                 <div className={styles.mask} />
-                <div className={styles.item6}>
+                <div key={index} className={styles.item6} style={{backgroundImage: `url(${v.images})`}}>
                   <img
                     className={styles.img1}
-                    src={v.images}
+                    src={VoiceImg}
                   />
                   <img
                     className={styles.img2}

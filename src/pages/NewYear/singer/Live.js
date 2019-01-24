@@ -8,6 +8,7 @@ import DengLongImg from '../../../assets/newyear/denglong.png';
 import bg1 from '../../../assets/singer/bg1.png';
 import PlayImg from '../../../assets/newyear/play.png';
 import PauseImg from '../../../assets/newyear/pause.png';
+import VoiceImg from '../../../assets/newyear/voice.png';
 
 class SingerLive extends Component {
   constructor(props) {
@@ -196,11 +197,14 @@ class SingerLive extends Component {
           <div className={styles.item5}>{desc}</div>
           {data_list.length > 0 &&
             data_list.map((v,index) => (
-              <div key={index} className={styles.item6}>
-                <img
-                  className={styles.img1}
-                  src={v.images}
-                />
+              <div style={{position: 'relative'}}>
+                <div key={index} className={styles.item6} style={{backgroundImage: `url(${v.images})`}}>
+                  <img
+                    className={styles.img1}
+                    src={VoiceImg}
+                  />
+                </div>
+                <div className={styles.item7}>{v.desc}</div>
               </div>
             ))}
         </div>
