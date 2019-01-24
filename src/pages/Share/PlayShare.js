@@ -39,6 +39,8 @@ class PlayShare extends Component {
       param: {
         type: type || 1,
         cid: cid || '189477276583936',
+        count: 100,
+        offset: 1
       },
     };
     dispatch({

@@ -28,6 +28,8 @@ class Share extends Component {
       param: {
         type: 2,
         cid: cid,
+        count: 100,
+        offset: 1
       },
     };
     dispatch({
