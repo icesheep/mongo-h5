@@ -45,6 +45,7 @@ class Share extends Component {
   }
 
   getData = () => {
+    const templateid = this.props.location.query.templateid || '0';
     const { dispatch } = this.props;
     const params = {
       "base": {
@@ -57,7 +58,9 @@ class Share extends Component {
         "apn": "wifi",
         "df": "22010000"
       }, 
-      "param": {},
+      "param": {
+        "templateid": templateid
+      },
     };
     dispatch({
       type: 'global/zhifou',
