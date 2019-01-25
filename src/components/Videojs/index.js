@@ -43,6 +43,7 @@ export default class VideoJsForReact extends Component {
       },
       function() {
         let player = this;
+        console.log(_this)
         let props = _this.props;
         let sources = _this.sources;
 

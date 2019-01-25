@@ -65,7 +65,7 @@ class Singer extends Component {
     return (
       <div style={{ height: '100%' }}>
         {type == 1 ? (
-          moment().isBefore(moment(begin_time)) ? (
+          !moment().isBefore(moment(begin_time)) ? (
             <Ready
               begin_time={begin_time}
               banner_images={banner_images}
@@ -91,20 +91,33 @@ class Singer extends Component {
             />
           ) : (
             <Live
+              begin_time={begin_time}
+              end_time={end_time}
               banner_images={banner_images}
               banner_playurl={banner_playurl}
               banner_title={banner_title}
               data_list={data_list}
+              msg={msg}
+              desc={desc}
+              playId={playId}
+              playType={playType}
+              refresh={this.refresh}
             />
           )
         ) : (
           type ? 
           <Live
+            begin_time={begin_time}
+            end_time={end_time}
             banner_images={banner_images}
             banner_playurl={banner_playurl}
             banner_title={banner_title}
             data_list={data_list}
+            msg={msg}
             desc={desc}
+            playId={playId}
+            playType={playType}
+            refresh={this.refresh}
           /> : <div style={{ paddingTop: 100, textAlign: 'center' }}>
             <Spin size="large" />
           </div>

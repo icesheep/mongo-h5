@@ -19,6 +19,7 @@ export default [
       { path: '/newyear', component: './NewYear/Singer' }, 
       { path: '/newyear/prelive', component: './NewYear/singer/Ready' }, 
       { path: '/newyear/live', component: './NewYear/singer/Live' }, 
+      { path: '/static', component: './Static/Bg1' }, 
     ],
   },
 ];
