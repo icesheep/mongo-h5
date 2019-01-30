@@ -19,7 +19,10 @@ class Share extends Component {
     super(props);
     this.isApp = navigator.userAgent.includes('DongTing') || WebView_isDongTing();
     // this.isLogin = WebView_isLogin();
+    this.appPlaying = false;
     this.state = {
+      playing: false,
+      nowDetailId: null,
       visible: false,
       tipVisible: false,
       nowTheme: {},
@@ -38,6 +41,14 @@ class Share extends Component {
     console.log("this.isApp:", this.isApp); // 判断登录信息
     // 自动登录逻辑
     WebView_login((r)=>{console.log(r)}, this.setLogin, "2");
+    //获取播放状态
+    WebView_getAppPlayerStatus((data) => {
+      this.appPlaying = data.playStatus;
+      this.setState({
+        nowDetailId: data.id,
+        playing: data.playStatus,
+      })
+    })
   }
 
   componentWillUnmount() {
@@ -102,26 +113,52 @@ class Share extends Component {
   play = (index) => {
     // 点击播放的时候判断
     this.isApp = navigator.userAgent.includes('DongTing') || WebView_isDongTing();
-    const {isLogin} = this.state;
+    const {isLogin,playing,nowDetailId} = this.state;
     const {
       global: { list = {}},
     } = this.props;
     const { content = []} = list;
-    const nowDetail = (content.length>0 && content[index||0]) || {};
+    const nowDetail = (content.length>0 && (index === 'all' ? content[0] : content[index||0])) || {};
     const {nowTheme} = this.state;
     const themeid = nowTheme.themeid;
     const type = parseInt(nowTheme.type);
     const urlParams = new URL(window.location.href);
-    if(this.isApp) {
-      if(isLogin) {
-        WebView_playInApp(type, nowDetail.id + "", themeid, nowDetail.playUrl, function(data) {
-          console.log(data);
-        });
+    if(!this.isApp) {
+      if (!this.appPlaying || nowDetailId !== nowDetail.id || index === 'all') {
+        this.setState({playing: true,nowDetailId: nowDetail.id});
+        const that = this;
+        that.appPlaying = true;
+        if(isLogin) {
+          WebView_playInApp(type, nowDetail.id + "", themeid, nowDetail.playUrl, function(data) {
+            console.log(data);
+          });
+        }else {
+          this.startTimeout();
+          WebView_playInApp(type, nowDetail.id + "", themeid, nowDetail.playUrl, function(data) {
+            console.log(data);
+          });
+        }
       }else {
-        this.startTimeout();
-        WebView_playInApp(type, nowDetail.id + "", themeid, nowDetail.playUrl, function(data) {
-          console.log(data);
-        });
+        if(playing) {
+          this.setState(
+            {
+              playing: false,
+            },
+            () => {
+              WebView_pauseOrResumeVideo(false);
+            }
+          );
+        }else {
+          this.setState(
+            {
+              playing: true,
+              nowDetail,
+            },
+            () => {
+              WebView_pauseOrResumeVideo(true);
+            }
+          );
+        }
       }
     }else {
       if(type && themeid) {
@@ -170,7 +207,7 @@ class Share extends Component {
   }
 
   render() {
-    const { visible, nowTheme, tipVisible, isLogin } = this.state;
+    const { visible, nowTheme, tipVisible, isLogin, nowDetailId, playing } = this.state;
     const {
       global: { list = {}, queryZhifou = {} },
     } = this.props;
@@ -204,17 +241,17 @@ class Share extends Component {
             </div>)}
           </div>
           <div className={styles.play}>
-            <Icon onClick={this.play} type="play-circle" style={{fontSize:'0.64rem', marginRight: '0.2333rem' }} />
+            <Icon onClick={()=>{this.play('all')}} type="play-circle" style={{fontSize:'0.64rem', marginRight: '0.2333rem' }} />
             <div className={styles.all}>全部播放</div>
             <Icon type="menu-fold" style={{fontSize:'0.64rem', display: 'none' }} />
           </div>
           {content.length > 0 &&
             content.map((v, index) => (
               <div onClick={()=>{if(index < 3 || isLogin){this.play(index)}else{this.openTip()}}} className={index >= 3 && !isLogin ? styles.item40 : styles.item4}>
-                <div className={styles.index}>{index+1}</div>
+                <div style={{color: v.id === nowDetailId ? '#ff1f7b':null}} className={styles.index}>{index+1}</div>
                 <div className={styles.detail}>
-                  <div className={styles.name}>{v.publishName}</div>
-                  <div className={styles.mark}>
+                  <div className={styles.name} style={{color: v.id === nowDetailId ? '#ff1f7b' :null}}>{v.publishName}</div>
+                  <div className={styles.mark} style={{color: v.id === nowDetailId ?  '#ff1f7b' :null}}>
                     <div className={styles.time}>{v.broadcastTime&&v.broadcastTime.substring(0,10)}</div>
                     <Icon type="clock-circle" style={{ marginLeft: '0.4533rem' }} />
                     <div className={styles.duration}>{this.formatterTime(v.duration)}</div>
@@ -222,6 +259,7 @@ class Share extends Component {
                     <div className={styles.count}>{v.playCount}</div>
                   </div>
                 </div>
+                {v.id === nowDetailId ? (playing ? <Icon type="pause-circle" style={{fontSize:'0.64rem', width: '0.64rem', marginRight: '0.2rem' }} /> : <Icon type="play-circle" style={{fontSize:'0.64rem', width: '0.64rem', marginRight: '0.2rem' }} />) : null}
               </div>
             ))}
         </div>

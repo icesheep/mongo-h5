@@ -1,7 +1,7 @@
 import { stringify } from 'qs';
 import request from '@/utils/request';
 
-const URL = "dev-fm.tingdao.com";
+const URL = "fm.tingdao.com";
 export async function queryList(params) {
   return request('https://'+URL+'/thridpartyapi/live/proxy?c=7004&v=1.0&sid=0000', {
     method: 'POST',
