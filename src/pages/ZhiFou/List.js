@@ -123,7 +123,7 @@ class Share extends Component {
     const themeid = nowTheme.themeid;
     const type = parseInt(nowTheme.type);
     const urlParams = new URL(window.location.href);
-    if(!this.isApp) {
+    if(this.isApp) {
       if (!this.appPlaying || nowDetailId !== nowDetail.id || index === 'all') {
         this.setState({playing: true,nowDetailId: nowDetail.id});
         const that = this;
