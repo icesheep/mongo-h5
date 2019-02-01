@@ -42,13 +42,13 @@ class Share extends Component {
     // 自动登录逻辑
     WebView_login((r)=>{console.log(r)}, this.setLogin, "2");
     //获取播放状态
-    WebView_getAppPlayerStatus((data) => {
-      this.appPlaying = data.playStatus;
-      this.setState({
-        nowDetailId: data.id,
-        playing: data.playStatus,
-      })
-    })
+    // WebView_getAppPlayerStatus((data) => {
+    //   this.appPlaying = data.playStatus;
+    //   this.setState({
+    //     nowDetailId: data.id,
+    //     playing: data.playStatus,
+    //   })
+    // })
   }
 
   componentWillUnmount() {
